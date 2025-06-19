@@ -1,24 +1,55 @@
-/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "@vercel/og";
 import { type NextRequest } from "next/server";
+import { Octokit } from "octokit";
+import { env } from "@/env";
+import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 
 export const runtime = "edge";
+
+function createOctokit() {
+  return new Octokit({
+    auth: env.GITHUB_TOKEN,
+  });
+}
+
+async function fetchGitHubUser(
+  userName: string,
+): Promise<
+  RestEndpointMethodTypes["users"]["getByUsername"]["response"]["data"] | null
+> {
+  try {
+    const octokit = createOctokit();
+    const { data: user } = await octokit.rest.users.getByUsername({
+      username: userName,
+    });
+    return user;
+  } catch (error) {
+    console.error("Error fetching GitHub user:", error);
+    return null;
+  }
+}
 
 export async function GET(
   _: NextRequest,
   { params }: { params: Promise<{ userName: string }> },
 ) {
   const { userName } = await params;
+  const gitHubUser = await fetchGitHubUser(userName);
+  if (!gitHubUser) {
+    return new Response("User not found", { status: 404 });
+  }
 
   const userData = {
-    name: "Tetsuo Nagahama",
-    username: userName,
-    bio: "Full Stack Engineer",
-    company: "Tech Company",
-    location: "Tokyo, Japan",
-    email: "example@example.com",
-    website: "https://example.com",
-    avatar: "https://github.com/github.png",
+    name: gitHubUser.name ?? gitHubUser.login,
+    username: gitHubUser.login,
+    bio: gitHubUser.bio ?? "GitHub Developer",
+    company: gitHubUser.company ?? "",
+    location: gitHubUser.location ?? "",
+    email: gitHubUser.email ?? "",
+    website: gitHubUser.blog ?? `https://github.com/${gitHubUser.login}`,
+    avatar: gitHubUser.avatar_url,
+    publicRepos: gitHubUser.public_repos,
+    followers: gitHubUser.followers,
   };
 
   try {
@@ -29,121 +60,9 @@ export async function GET(
             height: "100%",
             width: "100%",
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#1a1a1a",
-            fontFamily: "Inter, sans-serif",
-            color: "white",
-            padding: "40px",
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "30px",
-            }}
-          >
-            <img
-              src={userData.avatar}
-              alt="Avatar"
-              width={80}
-              height={80}
-              style={{
-                borderRadius: "50%",
-                marginRight: "20px",
-              }}
-            />
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <h1
-                style={{
-                  fontSize: "36px",
-                  fontWeight: "bold",
-                  margin: "0",
-                  marginBottom: "5px",
-                }}
-              >
-                {userData.name}
-              </h1>
-              <p
-                style={{
-                  fontSize: "20px",
-                  margin: "0",
-                  color: "#888",
-                }}
-              >
-                @{userData.username}
-              </p>
-            </div>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              textAlign: "center",
-              marginBottom: "30px",
-            }}
-          >
-            <p
-              style={{
-                fontSize: "24px",
-                margin: "0",
-                marginBottom: "10px",
-                fontWeight: "500",
-              }}
-            >
-              {userData.bio}
-            </p>
-            <p
-              style={{
-                fontSize: "18px",
-                margin: "0",
-                color: "#ccc",
-              }}
-            >
-              {userData.company} • {userData.location}
-            </p>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "10px",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                fontSize: "16px",
-                color: "#60A5FA",
-              }}
-            >
-              📧 {userData.email}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                fontSize: "16px",
-                color: "#60A5FA",
-              }}
-            >
-              🌐 {userData.website}
-            </div>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              bottom: "20px",
-              fontSize: "14px",
-              color: "#666",
-            }}
-          >
-            Generated from GitHub Profile
-          </div>
+          {JSON.stringify(userData)}
         </div>
       ),
       {
