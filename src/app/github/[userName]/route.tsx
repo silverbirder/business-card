@@ -30,7 +30,11 @@ async function fetchGitHubUser(
   }
 }
 
-async function fetchUserRepos(userName: string) {
+async function fetchUserRepos(
+  userName: string,
+): Promise<
+  RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"]
+> {
   try {
     const octokit = createOctokit();
     const { data: repos } = await octokit.rest.repos.listForUser({
@@ -47,21 +51,17 @@ async function fetchUserRepos(userName: string) {
 
 async function fetchUserStats(userName: string) {
   try {
-    const octokit = createOctokit();
     const repos = await fetchUserRepos(userName);
-
-    // 言語別の統計を計算
     const languageStats: Record<string, number> = {};
     let totalStars = 0;
 
     for (const repo of repos) {
       if (repo.language) {
-        languageStats[repo.language] = (languageStats[repo.language] || 0) + 1;
+        languageStats[repo.language] = (languageStats[repo.language] ?? 0) + 1;
       }
-      totalStars += repo.stargazers_count || 0;
+      totalStars += repo.stargazers_count ?? 0;
     }
 
-    // 上位3つの言語を取得
     const topLanguages = Object.entries(languageStats)
       .sort(([, a], [, b]) => b - a)
       .slice(0, 3);
@@ -70,7 +70,7 @@ async function fetchUserStats(userName: string) {
       totalStars,
       topLanguages,
       repoCount: repos.length,
-      repos, // リポジトリデータも返す
+      repos,
     };
   } catch (error) {
     console.error("Error fetching user stats:", error);
@@ -83,11 +83,7 @@ async function fetchUserStats(userName: string) {
   }
 }
 
-function generateLanguageChart(
-  languages: [string, number][],
-  width = 180,
-  height = 120,
-) {
+function generateLanguageChart(languages: [string, number][], width = 180) {
   if (languages.length === 0) {
     return null;
   }
@@ -163,7 +159,11 @@ function generateLanguageChart(
   );
 }
 
-function generateActivityChart(repos: any[], width = 180, height = 60) {
+function generateActivityChart(
+  repos: RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"],
+  width = 180,
+  height = 60,
+) {
   if (repos.length === 0) {
     return null;
   }
@@ -174,10 +174,10 @@ function generateActivityChart(repos: any[], width = 180, height = 60) {
 
   const activities = Array.from({ length: months }, (_, i) => {
     const recentRepos = repos.filter((repo) => {
-      const updatedAt = new Date(repo.updated_at);
+      const updatedAt = repo.updated_at ? new Date(repo.updated_at) : null;
       const monthsAgo = new Date();
       monthsAgo.setMonth(monthsAgo.getMonth() - i);
-      return updatedAt > monthsAgo;
+      return updatedAt ? updatedAt > monthsAgo : false;
     });
     return Math.min(recentRepos.length * 2, 10);
   }).reverse();
@@ -331,7 +331,7 @@ export async function GET(
                   marginBottom: "20px",
                 }}
               >
-                {userData.bio || "GitHub Developer"}
+                {userData.bio ?? "GitHub Developer"}
               </div>
               <div
                 style={{
@@ -347,7 +347,7 @@ export async function GET(
                     marginBottom: "5px",
                   }}
                 >
-                  📍 {userData.location || "Worldwide"}
+                  📍 {userData.location ?? "Worldwide"}
                 </div>
                 <div
                   style={{
