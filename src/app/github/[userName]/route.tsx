@@ -106,13 +106,116 @@ async function fetchUserFollowing(userName: string) {
   }
 }
 
+async function fetchUserStarred(userName: string) {
+  try {
+    const octokit = createOctokit();
+    const { data: starred } =
+      await octokit.rest.activity.listReposStarredByUser({
+        username: userName,
+        per_page: 10,
+        sort: "created",
+      });
+    return starred;
+  } catch (error) {
+    console.error("Error fetching user starred repos:", error);
+    return [];
+  }
+}
+
+async function fetchUserSubscriptions(userName: string) {
+  try {
+    const octokit = createOctokit();
+    const { data: subscriptions } =
+      await octokit.rest.activity.listReposWatchedByUser({
+        username: userName,
+        per_page: 10,
+      });
+    return subscriptions;
+  } catch (error) {
+    console.error("Error fetching user subscriptions:", error);
+    return [];
+  }
+}
+
+async function fetchUserReceivedEvents(userName: string) {
+  try {
+    const octokit = createOctokit();
+    const { data: receivedEvents } =
+      await octokit.rest.activity.listReceivedEventsForUser({
+        username: userName,
+        per_page: 30,
+      });
+    return receivedEvents;
+  } catch (error) {
+    console.error("Error fetching user received events:", error);
+    return [];
+  }
+}
+
+async function fetchUserPublicKeys(userName: string) {
+  try {
+    const octokit = createOctokit();
+    const { data: keys } = await octokit.rest.users.listPublicKeysForUser({
+      username: userName,
+    });
+    return keys;
+  } catch (error) {
+    console.error("Error fetching user public keys:", error);
+    return [];
+  }
+}
+
+async function fetchUserGpgKeys(userName: string) {
+  try {
+    const octokit = createOctokit();
+    const { data: gpgKeys } = await octokit.rest.users.listGpgKeysForUser({
+      username: userName,
+    });
+    return gpgKeys;
+  } catch (error) {
+    console.error("Error fetching user GPG keys:", error);
+    return [];
+  }
+}
+
+async function fetchUserSocialAccounts(userName: string) {
+  try {
+    const octokit = createOctokit();
+    const { data: socialAccounts } =
+      await octokit.rest.users.listSocialAccountsForUser({
+        username: userName,
+      });
+    return socialAccounts;
+  } catch (error) {
+    console.error("Error fetching user social accounts:", error);
+    return [];
+  }
+}
+
 async function fetchUserStats(userName: string) {
   try {
-    const [repos, gists, orgs, events] = await Promise.all([
+    const [
+      repos,
+      gists,
+      orgs,
+      events,
+      starred,
+      subscriptions,
+      receivedEvents,
+      publicKeys,
+      gpgKeys,
+      socialAccounts,
+    ] = await Promise.all([
       fetchUserRepos(userName),
       fetchUserGists(userName),
       fetchUserOrganizations(userName),
       fetchUserEvents(userName),
+      fetchUserStarred(userName),
+      fetchUserSubscriptions(userName),
+      fetchUserReceivedEvents(userName),
+      fetchUserPublicKeys(userName),
+      fetchUserGpgKeys(userName),
+      fetchUserSocialAccounts(userName),
     ]);
 
     const languageStats: Record<string, number> = {};
@@ -156,6 +259,37 @@ async function fetchUserStats(userName: string) {
           Date.now() - 30 * 24 * 60 * 60 * 1000,
     ).length;
 
+    const starredLanguageStats: Record<string, number> = {};
+    for (const starredRepo of starred) {
+      const language =
+        "language" in starredRepo
+          ? starredRepo.language
+          : starredRepo.repo?.language;
+      if (language) {
+        starredLanguageStats[language] =
+          (starredLanguageStats[language] ?? 0) + 1;
+      }
+    }
+
+    const yearlyCommits: Record<number, number> = {};
+
+    events.forEach((event) => {
+      if (event.type === "PushEvent" && event.created_at) {
+        const year = new Date(event.created_at).getFullYear();
+        yearlyCommits[year] = (yearlyCommits[year] ?? 0) + 1;
+      }
+    });
+
+    const eventTypeStats = events.reduce(
+      (acc, event) => {
+        if (event.type) {
+          acc[event.type] = (acc[event.type] ?? 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+
     return {
       totalStars,
       totalForks,
@@ -169,6 +303,19 @@ async function fetchUserStats(userName: string) {
       recentIssues,
       totalGists: gists.length,
       totalOrganizations: orgs.length,
+      starred,
+      starredCount: starred.length,
+      starredLanguageStats,
+      subscriptions,
+      subscriptionsCount: subscriptions.length,
+      receivedEvents,
+      publicKeys,
+      publicKeysCount: publicKeys.length,
+      gpgKeys,
+      gpgKeysCount: gpgKeys.length,
+      socialAccounts,
+      yearlyCommits,
+      eventTypeStats,
     };
   } catch (error) {
     console.error("Error fetching user stats:", error);
@@ -185,6 +332,19 @@ async function fetchUserStats(userName: string) {
       recentIssues: 0,
       totalGists: 0,
       totalOrganizations: 0,
+      starred: [],
+      starredCount: 0,
+      starredLanguageStats: {},
+      subscriptions: [],
+      subscriptionsCount: 0,
+      receivedEvents: [],
+      publicKeys: [],
+      publicKeysCount: 0,
+      gpgKeys: [],
+      gpgKeysCount: 0,
+      socialAccounts: [],
+      yearlyCommits: {},
+      eventTypeStats: {},
     };
   }
 }
@@ -372,6 +532,27 @@ export async function GET(
     recentIssues: userStats.recentIssues,
     totalGists: userStats.totalGists,
     totalOrganizations: userStats.totalOrganizations,
+    starred: userStats.starred,
+    starredCount: userStats.starredCount,
+    starredLanguageStats: userStats.starredLanguageStats,
+    subscriptions: userStats.subscriptions,
+    subscriptionsCount: userStats.subscriptionsCount,
+    receivedEvents: userStats.receivedEvents,
+    publicKeys: userStats.publicKeys,
+    publicKeysCount: userStats.publicKeysCount,
+    gpgKeys: userStats.gpgKeys,
+    gpgKeysCount: userStats.gpgKeysCount,
+    socialAccounts: userStats.socialAccounts,
+    yearlyCommits: userStats.yearlyCommits,
+    eventTypeStats: userStats.eventTypeStats,
+    createdAt: gitHubUser.created_at,
+    updatedAt: gitHubUser.updated_at,
+    type: gitHubUser.type,
+    siteAdmin: gitHubUser.site_admin,
+    publicGists: gitHubUser.public_gists,
+    hireable: gitHubUser.hireable,
+    twitterUsername: gitHubUser.twitter_username,
+    gravatarId: gitHubUser.gravatar_id,
   };
 
   try {
@@ -464,7 +645,53 @@ export async function GET(
                     🏢 {userData.company}
                   </div>
                 )}
+                {userData.twitterUsername && (
+                  <div
+                    style={{
+                      display: "flex",
+                      color: "#7d8590",
+                      fontSize: "12px",
+                      alignItems: "center",
+                    }}
+                  >
+                    🐦 @{userData.twitterUsername}
+                  </div>
+                )}
+                {userData.hireable && (
+                  <div
+                    style={{
+                      display: "flex",
+                      color: "#56d364",
+                      fontSize: "12px",
+                      alignItems: "center",
+                    }}
+                  >
+                    💼 Available for hire
+                  </div>
+                )}
               </div>
+              {userData.socialAccounts &&
+                userData.socialAccounts.length > 0 && (
+                  <div
+                    style={{ display: "flex", marginTop: "8px", gap: "10px" }}
+                  >
+                    {userData.socialAccounts
+                      .slice(0, 3)
+                      .map((account, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            display: "flex",
+                            color: "#58a6ff",
+                            fontSize: "10px",
+                            alignItems: "center",
+                          }}
+                        >
+                          🔗 {account.provider}
+                        </div>
+                      ))}
+                  </div>
+                )}
             </div>
             {userData.organizations.length > 0 && (
               <div
@@ -669,6 +896,118 @@ export async function GET(
                     📝 {userData.totalGists}
                   </span>
                 </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                    Starred
+                  </span>
+                  <span
+                    style={{
+                      color: "#f1c40f",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ⭐ {userData.starredCount}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                    Watching
+                  </span>
+                  <span
+                    style={{
+                      color: "#3498db",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    👁️ {userData.subscriptionsCount}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                    SSH Keys
+                  </span>
+                  <span
+                    style={{
+                      color: "#9b59b6",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🔑 {userData.publicKeysCount}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                    GPG Keys
+                  </span>
+                  <span
+                    style={{
+                      color: "#e67e22",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🛡️ {userData.gpgKeysCount}
+                  </span>
+                </div>
+                {userData.createdAt && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      background: "#161b22",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                      Member Since
+                    </span>
+                    <span
+                      style={{
+                        color: "#2ecc71",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {new Date(userData.createdAt).getFullYear()}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
             <div
@@ -837,6 +1176,54 @@ export async function GET(
                   marginBottom: "10px",
                 }}
               >
+                Activity Types (Recent)
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  marginBottom: "15px",
+                }}
+              >
+                {Object.entries(userData.eventTypeStats)
+                  .sort(([, a], [, b]) => b - a)
+                  .slice(0, 5)
+                  .map(([eventType, count], index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        background: "#161b22",
+                        padding: "4px 8px",
+                        borderRadius: "3px",
+                      }}
+                    >
+                      <span style={{ color: "#7d8590", fontSize: "9px" }}>
+                        {eventType.replace("Event", "")}
+                      </span>
+                      <span
+                        style={{
+                          color: "#58a6ff",
+                          fontSize: "9px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {count}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  color: "#f0f6fc",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                }}
+              >
                 Latest Repositories
               </div>
               <div
@@ -844,9 +1231,10 @@ export async function GET(
                   display: "flex",
                   flexDirection: "column",
                   gap: "6px",
+                  marginBottom: "15px",
                 }}
               >
-                {userData.repos.slice(0, 4).map((repo, index) => (
+                {userData.repos.slice(0, 3).map((repo, index) => (
                   <div
                     key={index}
                     style={{
@@ -865,8 +1253,8 @@ export async function GET(
                         marginBottom: "2px",
                       }}
                     >
-                      {repo.name.length > 20
-                        ? repo.name.substring(0, 20) + "..."
+                      {repo.name.length > 18
+                        ? repo.name.substring(0, 18) + "..."
                         : repo.name}
                     </div>
                     <div
@@ -877,8 +1265,8 @@ export async function GET(
                         marginBottom: "4px",
                       }}
                     >
-                      {repo.description && repo.description.length > 30
-                        ? repo.description.substring(0, 30) + "..."
+                      {repo.description && repo.description.length > 25
+                        ? repo.description.substring(0, 25) + "..."
                         : (repo.description ?? "No description")}
                     </div>
                     <div
@@ -896,6 +1284,79 @@ export async function GET(
                     </div>
                   </div>
                 ))}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  color: "#f0f6fc",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                }}
+              >
+                Recently Starred
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                }}
+              >
+                {userData.starred.slice(0, 2).map((starredItem, index) => {
+                  const repo =
+                    "repo" in starredItem ? starredItem.repo : starredItem;
+                  return (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        background: "#161b22",
+                        padding: "6px",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          color: "#f1c40f",
+                          fontSize: "9px",
+                          fontWeight: "bold",
+                          marginBottom: "2px",
+                        }}
+                      >
+                        {repo.name.length > 18
+                          ? repo.name.substring(0, 18) + "..."
+                          : repo.name}
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          color: "#7d8590",
+                          fontSize: "7px",
+                          marginBottom: "3px",
+                        }}
+                      >
+                        {repo.description && repo.description.length > 25
+                          ? repo.description.substring(0, 25) + "..."
+                          : (repo.description ?? "No description")}
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <span style={{ color: "#7d8590", fontSize: "7px" }}>
+                          {repo.language ?? "N/A"}
+                        </span>
+                        <span style={{ color: "#ffa657", fontSize: "7px" }}>
+                          ⭐ {repo.stargazers_count ?? 0}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
