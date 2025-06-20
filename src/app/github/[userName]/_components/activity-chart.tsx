@@ -1,5 +1,6 @@
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { GITHUB_COLORS, SPACING, TYPOGRAPHY } from "@/lib/design-token";
+import { Flex } from "./flex";
 
 interface ActivityChartProps {
   repos: RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"];
@@ -37,10 +38,9 @@ export function ActivityChart({ repos, width = 180, height = 60 }: ActivityChart
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <div
+    <Flex style={{ flexDirection: "column" }}>
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.muted,
           fontSize: TYPOGRAPHY.bodySmall.fontSize,
           fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
@@ -48,7 +48,7 @@ export function ActivityChart({ repos, width = 180, height = 60 }: ActivityChart
         }}
       >
         Activity (12 months)
-      </div>
+      </Flex>
       <svg width={width} height={height}>
         {activities.map((activity, index) => {
           const barHeight = (activity / maxActivity) * maxHeight;
@@ -69,6 +69,6 @@ export function ActivityChart({ repos, width = 180, height = 60 }: ActivityChart
           );
         })}
       </svg>
-    </div>
+    </Flex>
   );
 }

@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
+import { Flex } from "./flex";
 
 interface UserData {
   name: string;
@@ -20,9 +21,8 @@ interface UserHeaderProps {
 
 export function UserHeader({ userData }: UserHeaderProps) {
   return (
-    <div
+    <Flex
       style={{
-        display: "flex",
         background: GITHUB_COLORS.background.secondary,
         margin: SPACING["3xl"],
         marginBottom: SPACING.lg,
@@ -41,20 +41,18 @@ export function UserHeader({ userData }: UserHeaderProps) {
         }}
         alt="User Avatar"
       />
-      <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-        <div
+      <Flex style={{ flexDirection: "column", flex: 1 }}>
+        <Flex
           style={{
-            display: "flex",
             color: GITHUB_COLORS.text.primary,
             fontSize: TYPOGRAPHY.h1.fontSize,
             fontWeight: TYPOGRAPHY.h1.fontWeight,
           }}
         >
           {userData.name}
-        </div>
-        <div
+        </Flex>
+        <Flex
           style={{
-            display: "flex",
             color: GITHUB_COLORS.text.muted,
             fontSize: TYPOGRAPHY.h4.fontSize,
             fontWeight: TYPOGRAPHY.h4.fontWeight,
@@ -62,10 +60,9 @@ export function UserHeader({ userData }: UserHeaderProps) {
           }}
         >
           @{userData.username}
-        </div>
-        <div
+        </Flex>
+        <Flex
           style={{
-            display: "flex",
             color: GITHUB_COLORS.text.secondary,
             fontSize: TYPOGRAPHY.body.fontSize,
             fontWeight: TYPOGRAPHY.body.fontWeight,
@@ -73,12 +70,11 @@ export function UserHeader({ userData }: UserHeaderProps) {
           }}
         >
           {userData.bio}
-        </div>
-        <div style={{ display: "flex", gap: SPACING["4xl"] }}>
+        </Flex>
+        <Flex style={{ gap: SPACING["4xl"] }}>
           {userData.location && (
-            <div
+            <Flex
               style={{
-                display: "flex",
                 color: GITHUB_COLORS.text.muted,
                 fontSize: TYPOGRAPHY.bodySmall.fontSize,
                 fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
@@ -86,12 +82,11 @@ export function UserHeader({ userData }: UserHeaderProps) {
               }}
             >
               📍 {userData.location}
-            </div>
+            </Flex>
           )}
           {userData.company && (
-            <div
+            <Flex
               style={{
-                display: "flex",
                 color: GITHUB_COLORS.text.muted,
                 fontSize: TYPOGRAPHY.bodySmall.fontSize,
                 fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
@@ -99,12 +94,11 @@ export function UserHeader({ userData }: UserHeaderProps) {
               }}
             >
               🏢 {userData.company}
-            </div>
+            </Flex>
           )}
           {userData.twitterUsername && (
-            <div
+            <Flex
               style={{
-                display: "flex",
                 color: GITHUB_COLORS.text.muted,
                 fontSize: TYPOGRAPHY.bodySmall.fontSize,
                 fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
@@ -112,12 +106,11 @@ export function UserHeader({ userData }: UserHeaderProps) {
               }}
             >
               🐦 @{userData.twitterUsername}
-            </div>
+            </Flex>
           )}
           {userData.hireable && (
-            <div
+            <Flex
               style={{
-                display: "flex",
                 color: GITHUB_COLORS.accent.green,
                 fontSize: TYPOGRAPHY.bodySmall.fontSize,
                 fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
@@ -125,14 +118,13 @@ export function UserHeader({ userData }: UserHeaderProps) {
               }}
             >
               💼 Available for hire
-            </div>
+            </Flex>
           )}
-        </div>
+        </Flex>
         {userData.socialAccounts &&
           userData.socialAccounts.length > 0 && (
-            <div
+            <Flex
               style={{
-                display: "flex",
                 marginTop: SPACING.lg,
                 gap: SPACING.xl,
               }}
@@ -140,10 +132,9 @@ export function UserHeader({ userData }: UserHeaderProps) {
               {userData.socialAccounts
                 .slice(0, 3)
                 .map((account, index) => (
-                  <div
+                  <Flex
                     key={index}
                     style={{
-                      display: "flex",
                       color: GITHUB_COLORS.accent.blue,
                       fontSize: TYPOGRAPHY.bodySmall.fontSize,
                       fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
@@ -151,22 +142,20 @@ export function UserHeader({ userData }: UserHeaderProps) {
                     }}
                   >
                     🔗 {account.provider}
-                  </div>
+                  </Flex>
                 ))}
-            </div>
+            </Flex>
           )}
-      </div>
+      </Flex>
       {userData.organizations.length > 0 && (
-        <div
+        <Flex
           style={{
-            display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <div
+          <Flex
             style={{
-              display: "flex",
               color: GITHUB_COLORS.text.primary,
               fontSize: TYPOGRAPHY.bodySmall.fontSize,
               fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
@@ -174,8 +163,8 @@ export function UserHeader({ userData }: UserHeaderProps) {
             }}
           >
             Organizations
-          </div>
-          <div style={{ display: "flex", gap: SPACING.sm }}>
+          </Flex>
+          <Flex style={{ gap: SPACING.sm }}>
             {userData.organizations.slice(0, 3).map((org, index) => (
               <img
                 key={index}
@@ -188,9 +177,9 @@ export function UserHeader({ userData }: UserHeaderProps) {
                 alt={org.login}
               />
             ))}
-          </div>
-        </div>
+          </Flex>
+        </Flex>
       )}
-    </div>
+    </Flex>
   );
 }

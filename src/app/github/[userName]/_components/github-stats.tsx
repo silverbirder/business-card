@@ -1,5 +1,6 @@
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { StatsCard } from "./stats-card";
+import { Flex } from "./flex";
 
 interface GitHubStatsData {
   publicRepos: number;
@@ -24,9 +25,8 @@ interface GitHubStatsProps {
 
 export function GitHubStats({ userData }: GitHubStatsProps) {
   return (
-    <div
+    <Flex
       style={{
-        display: "flex",
         flexDirection: "column",
         background: GITHUB_COLORS.background.secondary,
         borderRadius: RADIUS.xl,
@@ -34,9 +34,8 @@ export function GitHubStats({ userData }: GitHubStatsProps) {
         flex: 1,
       }}
     >
-      <div
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.h4.fontSize,
           fontWeight: TYPOGRAPHY.h4.fontWeight,
@@ -44,10 +43,9 @@ export function GitHubStats({ userData }: GitHubStatsProps) {
         }}
       >
         GitHub Stats
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           flexDirection: "column",
           gap: SPACING.lg,
         }}
@@ -134,7 +132,7 @@ export function GitHubStats({ userData }: GitHubStatsProps) {
             color={GITHUB_COLORS.accent.darkGreen}
           />
         )}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }

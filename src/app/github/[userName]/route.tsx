@@ -11,6 +11,7 @@ import {
   GitHubStats,
   AdvancedStats,
   RecentActivity,
+  Flex,
 } from "./_components";
 
 export const runtime = "edge";
@@ -92,20 +93,18 @@ export async function GET(
   try {
     return new ImageResponse(
       (
-        <div
+        <Flex
           style={{
             height: "100%",
             width: "100%",
-            display: "flex",
             background: GITHUB_COLORS.background.primary,
             fontFamily: "Inter",
             flexDirection: "column",
           }}
         >
           <UserHeader userData={userData} />
-          <div
+          <Flex
             style={{
-              display: "flex",
               margin: `0 ${SPACING["3xl"]} ${SPACING["3xl"]} ${SPACING["3xl"]}`,
               gap: SPACING["3xl"],
               flex: 1,
@@ -114,8 +113,8 @@ export async function GET(
             <GitHubStats userData={userData} />
             <AdvancedStats userData={userData} />
             <RecentActivity userData={userData} />
-          </div>
-        </div>
+          </Flex>
+        </Flex>
       ),
       {
         width: 1200,

@@ -1,4 +1,5 @@
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
+import { Flex } from "./flex";
 
 interface LanguageChartProps {
   languages: [string, number][];
@@ -40,7 +41,7 @@ export function LanguageChart({ languages, width = 180 }: LanguageChartProps) {
   });
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <Flex style={{ flexDirection: "column" }}>
       <svg
         width={width}
         height={barHeight}
@@ -48,9 +49,8 @@ export function LanguageChart({ languages, width = 180 }: LanguageChartProps) {
       >
         {bars}
       </svg>
-      <div
+      <Flex
         style={{
-          display: "flex",
           flexDirection: "column",
           gap: SPACING.md,
         }}
@@ -58,10 +58,9 @@ export function LanguageChart({ languages, width = 180 }: LanguageChartProps) {
         {languages.slice(0, 3).map(([language, count], index) => {
           const percentage = Math.round((count / total) * 100);
           return (
-            <div
+            <Flex
               key={language}
               style={{
-                display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
                 fontSize: TYPOGRAPHY.bodySmall.fontSize,
@@ -69,7 +68,7 @@ export function LanguageChart({ languages, width = 180 }: LanguageChartProps) {
                 color: GITHUB_COLORS.text.muted,
               }}
             >
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <Flex style={{ alignItems: "center" }}>
                 <div
                   style={{
                     width: "8px",
@@ -79,9 +78,14 @@ export function LanguageChart({ languages, width = 180 }: LanguageChartProps) {
                     marginRight: SPACING.md,
                   }}
                 />
-                <span>{language}</span>
-              </div>
-              <span
+                <Flex
+                  style={{
+                  }}
+                >
+                  {language}
+                </Flex>
+              </Flex>
+              <Flex
                 style={{
                   color: GITHUB_COLORS.text.secondary,
                   fontSize: TYPOGRAPHY.caption.fontSize,
@@ -89,11 +93,11 @@ export function LanguageChart({ languages, width = 180 }: LanguageChartProps) {
                 }}
               >
                 {percentage}%
-              </span>
-            </div>
+              </Flex>
+            </Flex>
           );
         })}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }

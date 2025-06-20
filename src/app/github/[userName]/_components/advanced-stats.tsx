@@ -3,6 +3,7 @@ import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { StatsCard } from "./stats-card";
 import { LanguageChart } from "./language-chart";
 import { ActivityChart } from "./activity-chart";
+import { Flex } from "./flex";
 
 interface AdvancedStatsData {
   topLanguages: [string, number][];
@@ -19,9 +20,8 @@ interface AdvancedStatsProps {
 
 export function AdvancedStats({ userData }: AdvancedStatsProps) {
   return (
-    <div
+    <Flex
       style={{
-        display: "flex",
         flexDirection: "column",
         background: GITHUB_COLORS.background.secondary,
         borderRadius: RADIUS.xl,
@@ -29,9 +29,8 @@ export function AdvancedStats({ userData }: AdvancedStatsProps) {
         flex: 1,
       }}
     >
-      <div
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.h4.fontSize,
           fontWeight: TYPOGRAPHY.h4.fontWeight,
@@ -39,26 +38,24 @@ export function AdvancedStats({ userData }: AdvancedStatsProps) {
         }}
       >
         Top Languages
-      </div>
-      <div style={{ display: "flex", marginBottom: SPACING["4xl"] }}>
+      </Flex>
+      <Flex style={{ marginBottom: SPACING["4xl"] }}>
         {userData.topLanguages.length > 0 ? (
           <LanguageChart languages={userData.topLanguages} width={250} />
         ) : (
-          <div
+          <Flex
             style={{
-              display: "flex",
               color: GITHUB_COLORS.text.muted,
               fontSize: TYPOGRAPHY.bodySmall.fontSize,
               fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
             }}
           >
             No language data
-          </div>
+          </Flex>
         )}
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.h4.fontSize,
           fontWeight: TYPOGRAPHY.h4.fontWeight,
@@ -66,10 +63,9 @@ export function AdvancedStats({ userData }: AdvancedStatsProps) {
         }}
       >
         Advanced Statistics
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           flexDirection: "column",
           gap: SPACING.lg,
           marginBottom: SPACING["4xl"],
@@ -109,10 +105,9 @@ export function AdvancedStats({ userData }: AdvancedStatsProps) {
           }
           color={GITHUB_COLORS.accent.orange}
         />
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.h4.fontSize,
           fontWeight: TYPOGRAPHY.h4.fontWeight,
@@ -120,21 +115,20 @@ export function AdvancedStats({ userData }: AdvancedStatsProps) {
         }}
       >
         Repository Activity
-      </div>
+      </Flex>
       {userData.repos.length > 0 ? (
         <ActivityChart repos={userData.repos} width={250} height={80} />
       ) : (
-        <div
+        <Flex
           style={{
-            display: "flex",
             color: GITHUB_COLORS.text.muted,
             fontSize: TYPOGRAPHY.bodySmall.fontSize,
             fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
           }}
         >
           No activity data
-        </div>
+        </Flex>
       )}
-    </div>
+    </Flex>
   );
 }

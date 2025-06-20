@@ -1,4 +1,5 @@
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
+import { Flex } from "./flex";
 
 interface StatsCardProps {
   label: string;
@@ -9,16 +10,15 @@ interface StatsCardProps {
 
 export function StatsCard({ label, value, color, icon }: StatsCardProps) {
   return (
-    <div
+    <Flex
       style={{
-        display: "flex",
         justifyContent: "space-between",
         background: GITHUB_COLORS.background.tertiary,
         padding: `${SPACING.lg} ${SPACING["2xl"]}`,
         borderRadius: RADIUS.md,
       }}
     >
-      <span
+      <Flex
         style={{
           color: GITHUB_COLORS.text.muted,
           fontSize: TYPOGRAPHY.bodySmall.fontSize,
@@ -26,8 +26,8 @@ export function StatsCard({ label, value, color, icon }: StatsCardProps) {
         }}
       >
         {label}
-      </span>
-      <span
+      </Flex>
+      <Flex
         style={{
           color,
           fontSize: TYPOGRAPHY.bodySmall.fontSize,
@@ -35,7 +35,7 @@ export function StatsCard({ label, value, color, icon }: StatsCardProps) {
         }}
       >
         {icon && `${icon} `}{value}
-      </span>
-    </div>
+      </Flex>
+    </Flex>
   );
 }

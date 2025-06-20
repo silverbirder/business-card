@@ -1,5 +1,6 @@
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
+import { Flex } from "./flex";
 
 interface RecentActivityData {
   recentCommits: number;
@@ -23,9 +24,8 @@ interface RecentActivityProps {
 
 export function RecentActivity({ userData }: RecentActivityProps) {
   return (
-    <div
+    <Flex
       style={{
-        display: "flex",
         flexDirection: "column",
         background: GITHUB_COLORS.background.secondary,
         borderRadius: RADIUS.xl,
@@ -33,9 +33,8 @@ export function RecentActivity({ userData }: RecentActivityProps) {
         minWidth: "220px",
       }}
     >
-      <div
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.h4.fontSize,
           fontWeight: TYPOGRAPHY.h4.fontWeight,
@@ -43,25 +42,23 @@ export function RecentActivity({ userData }: RecentActivityProps) {
         }}
       >
         Recent Activity (30d)
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           flexDirection: "column",
           gap: SPACING.lg,
           marginBottom: SPACING["4xl"],
         }}
       >
-        <div
+        <Flex
           style={{
-            display: "flex",
             justifyContent: "space-between",
             background: GITHUB_COLORS.background.tertiary,
             padding: `${SPACING.md} ${SPACING.xl}`,
             borderRadius: RADIUS.sm,
           }}
         >
-          <span
+          <Flex
             style={{
               color: GITHUB_COLORS.text.muted,
               fontSize: TYPOGRAPHY.caption.fontSize,
@@ -69,8 +66,8 @@ export function RecentActivity({ userData }: RecentActivityProps) {
             }}
           >
             💻 Commits
-          </span>
-          <span
+          </Flex>
+          <Flex
             style={{
               color: GITHUB_COLORS.accent.green,
               fontSize: TYPOGRAPHY.caption.fontSize,
@@ -78,18 +75,17 @@ export function RecentActivity({ userData }: RecentActivityProps) {
             }}
           >
             {userData.recentCommits}
-          </span>
-        </div>
-        <div
+          </Flex>
+        </Flex>
+        <Flex
           style={{
-            display: "flex",
             justifyContent: "space-between",
             background: GITHUB_COLORS.background.tertiary,
             padding: `${SPACING.md} ${SPACING.xl}`,
             borderRadius: RADIUS.sm,
           }}
         >
-          <span
+          <Flex
             style={{
               color: GITHUB_COLORS.text.muted,
               fontSize: TYPOGRAPHY.caption.fontSize,
@@ -97,8 +93,8 @@ export function RecentActivity({ userData }: RecentActivityProps) {
             }}
           >
             🔄 Pull Requests
-          </span>
-          <span
+          </Flex>
+          <Flex
             style={{
               color: GITHUB_COLORS.accent.blue,
               fontSize: TYPOGRAPHY.caption.fontSize,
@@ -106,11 +102,10 @@ export function RecentActivity({ userData }: RecentActivityProps) {
             }}
           >
             {userData.recentPRs}
-          </span>
-        </div>
-        <div
+          </Flex>
+        </Flex>
+        <Flex
           style={{
-            display: "flex",
             justifyContent: "space-between",
             background: GITHUB_COLORS.background.tertiary,
             padding: `${SPACING.md} ${SPACING.xl}`,
@@ -135,12 +130,11 @@ export function RecentActivity({ userData }: RecentActivityProps) {
           >
             {userData.recentIssues}
           </span>
-        </div>
-      </div>
+        </Flex>
+      </Flex>
 
-      <div
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.body.fontSize,
           fontWeight: TYPOGRAPHY.body.fontWeight,
@@ -148,10 +142,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
         }}
       >
         Activity Types (Recent)
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           flexDirection: "column",
           gap: SPACING.sm,
           marginBottom: SPACING["3xl"],
@@ -161,10 +154,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
           .sort(([, a], [, b]) => b - a)
           .slice(0, 5)
           .map(([eventType, count], index) => (
-            <div
+            <Flex
               key={index}
               style={{
-                display: "flex",
                 justifyContent: "space-between",
                 background: GITHUB_COLORS.background.tertiary,
                 padding: `${SPACING.sm} ${SPACING.lg}`,
@@ -189,13 +181,11 @@ export function RecentActivity({ userData }: RecentActivityProps) {
               >
                 {count}
               </span>
-            </div>
+            </Flex>
           ))}
-      </div>
-
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.body.fontSize,
           fontWeight: TYPOGRAPHY.body.fontWeight,
@@ -203,10 +193,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
         }}
       >
         Active Days (Weekly)
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           flexDirection: "column",
           gap: SPACING.sm,
           marginBottom: SPACING["3xl"],
@@ -216,10 +205,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
           .sort(([, a], [, b]) => b - a)
           .slice(0, 3)
           .map(([day, count], index) => (
-            <div
+            <Flex
               key={index}
               style={{
-                display: "flex",
                 justifyContent: "space-between",
                 background: GITHUB_COLORS.background.tertiary,
                 padding: `${SPACING.sm} ${SPACING.lg}`,
@@ -244,13 +232,11 @@ export function RecentActivity({ userData }: RecentActivityProps) {
               >
                 {count}
               </span>
-            </div>
+            </Flex>
           ))}
-      </div>
-
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.body.fontSize,
           fontWeight: TYPOGRAPHY.body.fontWeight,
@@ -258,10 +244,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
         }}
       >
         Top Active Months
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           flexDirection: "column",
           gap: SPACING.sm,
           marginBottom: SPACING["3xl"],
@@ -271,10 +256,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
           .sort(([, a], [, b]) => b - a)
           .slice(0, 3)
           .map(([month, count], index) => (
-            <div
+            <Flex
               key={index}
               style={{
-                display: "flex",
                 justifyContent: "space-between",
                 background: GITHUB_COLORS.background.tertiary,
                 padding: `${SPACING.sm} ${SPACING.lg}`,
@@ -299,13 +283,12 @@ export function RecentActivity({ userData }: RecentActivityProps) {
               >
                 {count}
               </span>
-            </div>
+            </Flex>
           ))}
-      </div>
+      </Flex>
 
-      <div
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.body.fontSize,
           fontWeight: TYPOGRAPHY.body.fontWeight,
@@ -313,29 +296,26 @@ export function RecentActivity({ userData }: RecentActivityProps) {
         }}
       >
         Latest Repositories
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           flexDirection: "column",
           gap: SPACING.md,
           marginBottom: SPACING["3xl"],
         }}
       >
         {userData.repos.slice(0, 3).map((repo, index) => (
-          <div
+          <Flex
             key={index}
             style={{
-              display: "flex",
               flexDirection: "column",
               background: GITHUB_COLORS.background.tertiary,
               padding: SPACING.lg,
               borderRadius: RADIUS.sm,
             }}
           >
-            <div
+            <Flex
               style={{
-                display: "flex",
                 color: GITHUB_COLORS.accent.blue,
                 fontSize: TYPOGRAPHY.bodySmall.fontSize,
                 fontWeight: TYPOGRAPHY.label.fontWeight,
@@ -345,10 +325,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
               {repo.name.length > 18
                 ? repo.name.substring(0, 18) + "..."
                 : repo.name}
-            </div>
-            <div
+            </Flex>
+            <Flex
               style={{
-                display: "flex",
                 color: GITHUB_COLORS.text.muted,
                 fontSize: TYPOGRAPHY.caption.fontSize,
                 fontWeight: TYPOGRAPHY.caption.fontWeight,
@@ -358,10 +337,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
               {repo.description && repo.description.length > 25
                 ? repo.description.substring(0, 25) + "..."
                 : (repo.description ?? "No description")}
-            </div>
-            <div
+            </Flex>
+            <Flex
               style={{
-                display: "flex",
                 justifyContent: "space-between",
               }}
             >
@@ -383,16 +361,15 @@ export function RecentActivity({ userData }: RecentActivityProps) {
               >
                 ⭐ {repo.stargazers_count ?? 0}
               </span>
-            </div>
-          </div>
+            </Flex>
+          </Flex>
         ))}
-      </div>
+      </Flex>
 
       {userData.packagesCount > 0 && (
         <>
-          <div
+          <Flex
             style={{
-              display: "flex",
               color: GITHUB_COLORS.text.primary,
               fontSize: TYPOGRAPHY.body.fontSize,
               fontWeight: TYPOGRAPHY.body.fontWeight,
@@ -400,10 +377,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
             }}
           >
             Package Ecosystems
-          </div>
-          <div
+          </Flex>
+          <Flex
             style={{
-              display: "flex",
               flexDirection: "column",
               gap: SPACING.sm,
               marginBottom: SPACING["3xl"],
@@ -413,10 +389,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
               .sort(([, a], [, b]) => b - a)
               .slice(0, 3)
               .map(([ecosystem, count], index) => (
-                <div
+                <Flex
                   key={index}
                   style={{
-                    display: "flex",
                     justifyContent: "space-between",
                     background: GITHUB_COLORS.background.tertiary,
                     padding: `${SPACING.sm} ${SPACING.lg}`,
@@ -441,15 +416,14 @@ export function RecentActivity({ userData }: RecentActivityProps) {
                   >
                     {count}
                   </span>
-                </div>
+                </Flex>
               ))}
-          </div>
+          </Flex>
         </>
       )}
 
-      <div
+      <Flex
         style={{
-          display: "flex",
           color: GITHUB_COLORS.text.primary,
           fontSize: TYPOGRAPHY.body.fontSize,
           fontWeight: TYPOGRAPHY.body.fontWeight,
@@ -457,10 +431,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
         }}
       >
         Recently Starred
-      </div>
-      <div
+      </Flex>
+      <Flex
         style={{
-          display: "flex",
           flexDirection: "column",
           gap: SPACING.md,
         }}
@@ -468,19 +441,17 @@ export function RecentActivity({ userData }: RecentActivityProps) {
         {userData.starred.slice(0, 2).map((starredItem, index) => {
           const repo = "repo" in starredItem ? starredItem.repo : starredItem;
           return (
-            <div
+            <Flex
               key={index}
               style={{
-                display: "flex",
                 flexDirection: "column",
                 background: GITHUB_COLORS.background.tertiary,
                 padding: SPACING.md,
                 borderRadius: RADIUS.sm,
               }}
             >
-              <div
+              <Flex
                 style={{
-                  display: "flex",
                   color: GITHUB_COLORS.accent.yellow,
                   fontSize: TYPOGRAPHY.caption.fontSize,
                   fontWeight: TYPOGRAPHY.label.fontWeight,
@@ -490,10 +461,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
                 {repo.name.length > 18
                   ? repo.name.substring(0, 18) + "..."
                   : repo.name}
-              </div>
-              <div
+              </Flex>
+              <Flex
                 style={{
-                  display: "flex",
                   color: GITHUB_COLORS.text.muted,
                   fontSize: TYPOGRAPHY.caption.fontSize,
                   fontWeight: TYPOGRAPHY.caption.fontWeight,
@@ -503,10 +473,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
                 {repo.description && repo.description.length > 25
                   ? repo.description.substring(0, 25) + "..."
                   : (repo.description ?? "No description")}
-              </div>
-              <div
+              </Flex>
+              <Flex
                 style={{
-                  display: "flex",
                   justifyContent: "space-between",
                 }}
               >
@@ -528,17 +497,16 @@ export function RecentActivity({ userData }: RecentActivityProps) {
                 >
                   ⭐ {repo.stargazers_count ?? 0}
                 </span>
-              </div>
-            </div>
+              </Flex>
+            </Flex>
           );
         })}
-      </div>
+      </Flex>
 
       {userData.receivedPublicEventsCount > 0 && (
         <>
-          <div
+          <Flex
             style={{
-              display: "flex",
               color: GITHUB_COLORS.text.primary,
               fontSize: TYPOGRAPHY.bodySmall.fontSize,
               fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
@@ -547,10 +515,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
             }}
           >
             Recent Public Events ({userData.receivedPublicEventsCount})
-          </div>
-          <div
+          </Flex>
+          <Flex
             style={{
-              display: "flex",
               background: GITHUB_COLORS.background.tertiary,
               padding: `${SPACING.md} ${SPACING.lg}`,
               borderRadius: RADIUS.sm,
@@ -566,9 +533,9 @@ export function RecentActivity({ userData }: RecentActivityProps) {
             >
               📡 Monitoring activity
             </span>
-          </div>
+          </Flex>
         </>
       )}
-    </div>
+    </Flex>
   );
 }
