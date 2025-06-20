@@ -109,8 +109,8 @@ export async function GET(
         </Flex>
       ),
       {
-        width: 1200,
-        height: 700,
+        width: 910,
+        height: 550,
       },
     );
   } catch (error) {
