@@ -1,4 +1,3 @@
-import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 import type { RecentActivityData } from "@/types/github";
 
@@ -9,54 +8,20 @@ type Props = {
 export const ActiveDays = ({ dayOfWeekStats }: Props) => {
   return (
     <>
-      <Flex
-        style={{
-          color: GITHUB_COLORS.text.primary,
-          fontSize: TYPOGRAPHY.body.fontSize,
-          fontWeight: TYPOGRAPHY.body.fontWeight,
-          marginBottom: SPACING["2xl"],
-        }}
-      >
-        Active Days (Weekly)
-      </Flex>
-      <Flex
-        style={{
-          flexDirection: "column",
-          gap: SPACING.sm,
-          marginBottom: SPACING["3xl"],
-        }}
-      >
+      <Flex tw="text-white text-sm font-normal mb-3">Active Days (Weekly)</Flex>
+      <Flex tw="flex-col mb-4">
         {Object.entries(dayOfWeekStats)
           .sort(([, a], [, b]) => b - a)
           .slice(0, 3)
           .map(([day, count], index) => (
             <Flex
               key={index}
-              style={{
-                justifyContent: "space-between",
-                background: GITHUB_COLORS.background.tertiary,
-                padding: `${SPACING.sm} ${SPACING.lg}`,
-                borderRadius: RADIUS.xs,
-              }}
+              tw="justify-between bg-gray-900 px-2 py-1 rounded-sm mb-1"
             >
-              <span
-                style={{
-                  color: GITHUB_COLORS.text.muted,
-                  fontSize: TYPOGRAPHY.caption.fontSize,
-                  fontWeight: TYPOGRAPHY.caption.fontWeight,
-                }}
-              >
+              <span tw="text-gray-400 text-xs font-normal">
                 {day.substring(0, 3)}
               </span>
-              <span
-                style={{
-                  color: GITHUB_COLORS.accent.green,
-                  fontSize: TYPOGRAPHY.caption.fontSize,
-                  fontWeight: TYPOGRAPHY.label.fontWeight,
-                }}
-              >
-                {count}
-              </span>
+              <span tw="text-green-400 text-xs font-medium">{count}</span>
             </Flex>
           ))}
       </Flex>

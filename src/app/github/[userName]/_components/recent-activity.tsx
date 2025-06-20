@@ -1,4 +1,3 @@
-import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 import { ActivityStats } from "./activity-stats";
 import { ActivityTypes } from "./activity-types";
@@ -16,23 +15,8 @@ type Props = {
 
 export const RecentActivity = ({ userData }: Props) => {
   return (
-    <Flex
-      style={{
-        flexDirection: "column",
-        background: GITHUB_COLORS.background.secondary,
-        borderRadius: RADIUS.xl,
-        padding: SPACING["4xl"],
-        minWidth: "220px",
-      }}
-    >
-      <Flex
-        style={{
-          color: GITHUB_COLORS.text.primary,
-          fontSize: TYPOGRAPHY.h4.fontSize,
-          fontWeight: TYPOGRAPHY.h4.fontWeight,
-          marginBottom: SPACING["3xl"],
-        }}
-      >
+    <Flex tw="flex-col bg-gray-800 rounded-xl p-5 min-w-[220px]">
+      <Flex tw="text-white text-base font-semibold mb-4">
         Recent Activity (30d)
       </Flex>
       <ActivityStats userData={userData} />

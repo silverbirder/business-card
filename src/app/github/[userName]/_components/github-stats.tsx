@@ -1,6 +1,5 @@
-import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
-import { StatsCard } from "./stats-card";
 import { Flex } from "./flex";
+import { StatsCard } from "./stats-card";
 import type { GitHubStatsData } from "@/types/github";
 
 type Props = {
@@ -9,111 +8,89 @@ type Props = {
 
 export const GitHubStats = ({ userData }: Props) => {
   return (
-    <Flex
-      style={{
-        flexDirection: "column",
-        background: GITHUB_COLORS.background.secondary,
-        borderRadius: RADIUS.xl,
-        padding: SPACING["4xl"],
-        flex: 1,
-      }}
-    >
-      <Flex
-        style={{
-          color: GITHUB_COLORS.text.primary,
-          fontSize: TYPOGRAPHY.h4.fontSize,
-          fontWeight: TYPOGRAPHY.h4.fontWeight,
-          marginBottom: SPACING["3xl"],
-        }}
-      >
-        GitHub Stats
-      </Flex>
-      <Flex
-        style={{
-          flexDirection: "column",
-          gap: SPACING.lg,
-        }}
-      >
+    <Flex tw="flex-col bg-gray-800 rounded-xl px-5 py-5 flex-1">
+      <Flex tw="text-white text-base font-semibold mb-4">GitHub Stats</Flex>
+      <Flex tw="flex-col">
         <StatsCard
           label="Repositories"
           value={userData.publicRepos}
-          color={GITHUB_COLORS.accent.blue}
+          color="#58a6ff"
         />
         <StatsCard
           label="Followers"
           value={userData.followers}
-          color={GITHUB_COLORS.accent.red}
+          color="#f85149"
         />
         <StatsCard
           label="Following"
           value={userData.following}
-          color={GITHUB_COLORS.accent.green}
+          color="#56d364"
         />
         <StatsCard
           label="Total Stars"
           value={userData.totalStars}
-          color={GITHUB_COLORS.accent.orange}
+          color="#ffa657"
           icon="⭐"
         />
         <StatsCard
           label="Total Forks"
           value={userData.totalForks}
-          color={GITHUB_COLORS.accent.purple}
+          color="#d2a8ff"
           icon="🍴"
         />
         <StatsCard
           label="Gists"
           value={userData.totalGists}
-          color={GITHUB_COLORS.accent.blue}
+          color="#58a6ff"
           icon="📝"
         />
         <StatsCard
           label="Starred"
           value={userData.starredCount}
-          color={GITHUB_COLORS.accent.yellow}
+          color="#f1c40f"
           icon="⭐"
         />
         <StatsCard
           label="Watching"
           value={userData.subscriptionsCount}
-          color={GITHUB_COLORS.accent.lightBlue}
+          color="#3498db"
           icon="👁️"
         />
         <StatsCard
           label="SSH Keys"
           value={userData.publicKeysCount}
-          color={GITHUB_COLORS.accent.darkPurple}
+          color="#9b59b6"
           icon="🔑"
         />
         <StatsCard
           label="GPG Keys"
           value={userData.gpgKeysCount}
-          color={GITHUB_COLORS.accent.darkOrange}
+          color="#e67e22"
           icon="🛡️"
         />
         <StatsCard
           label="SSH Signing Keys"
           value={userData.sshSigningKeysCount}
-          color={GITHUB_COLORS.accent.darkPurple}
+          color="#9b59b6"
           icon="🔐"
         />
         <StatsCard
           label="Packages"
           value={userData.packagesCount}
-          color={GITHUB_COLORS.accent.darkYellow}
+          color="#f39c12"
           icon="📦"
         />
         <StatsCard
           label="Following/Followers"
           value={userData.followerToFollowingRatio.toFixed(1)}
-          color={GITHUB_COLORS.accent.darkRed}
+          color="#e74c3c"
           icon="📊"
         />
         {userData.createdAt && (
           <StatsCard
             label="Member Since"
             value={new Date(userData.createdAt).getFullYear()}
-            color={GITHUB_COLORS.accent.darkGreen}
+            color="#2ecc71"
           />
         )}
       </Flex>

@@ -1,4 +1,3 @@
-import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 
 type Props = {
@@ -12,32 +11,11 @@ export const PublicEvents = ({ receivedPublicEventsCount }: Props) => {
 
   return (
     <>
-      <Flex
-        style={{
-          color: GITHUB_COLORS.text.primary,
-          fontSize: TYPOGRAPHY.bodySmall.fontSize,
-          fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-          marginTop: SPACING["3xl"],
-          marginBottom: SPACING.lg,
-        }}
-      >
+      <Flex tw="text-white text-sm font-normal mt-4 mb-2">
         Recent Public Events ({receivedPublicEventsCount})
       </Flex>
-      <Flex
-        style={{
-          background: GITHUB_COLORS.background.tertiary,
-          padding: `${SPACING.md} ${SPACING.lg}`,
-          borderRadius: RADIUS.sm,
-          justifyContent: "center",
-        }}
-      >
-        <span
-          style={{
-            color: GITHUB_COLORS.text.muted,
-            fontSize: TYPOGRAPHY.caption.fontSize,
-            fontWeight: TYPOGRAPHY.caption.fontWeight,
-          }}
-        >
+      <Flex tw="bg-gray-900 px-3 py-2 rounded justify-center">
+        <span tw="text-gray-400 text-xs font-normal">
           📡 Monitoring activity
         </span>
       </Flex>

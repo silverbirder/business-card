@@ -1,98 +1,29 @@
-import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 import type { RecentActivityData } from "@/types/github";
 
 type Props = {
-  userData: Pick<RecentActivityData, "recentCommits" | "recentPRs" | "recentIssues">;
+  userData: Pick<
+    RecentActivityData,
+    "recentCommits" | "recentPRs" | "recentIssues"
+  >;
 };
 
 export const ActivityStats = ({ userData }: Props) => {
   return (
-    <Flex
-      style={{
-        flexDirection: "column",
-        gap: SPACING.lg,
-        marginBottom: SPACING["4xl"],
-      }}
-    >
-      <Flex
-        style={{
-          justifyContent: "space-between",
-          background: GITHUB_COLORS.background.tertiary,
-          padding: `${SPACING.md} ${SPACING.xl}`,
-          borderRadius: RADIUS.sm,
-        }}
-      >
-        <Flex
-          style={{
-            color: GITHUB_COLORS.text.muted,
-            fontSize: TYPOGRAPHY.caption.fontSize,
-            fontWeight: TYPOGRAPHY.caption.fontWeight,
-          }}
-        >
-          💻 Commits
-        </Flex>
-        <Flex
-          style={{
-            color: GITHUB_COLORS.accent.green,
-            fontSize: TYPOGRAPHY.caption.fontSize,
-            fontWeight: TYPOGRAPHY.label.fontWeight,
-          }}
-        >
+    <Flex tw="flex-col mb-5">
+      <Flex tw="justify-between bg-gray-900 px-3 py-2 rounded mb-2">
+        <span tw="text-gray-400 text-xs font-normal">💻 Commits</span>
+        <span tw="text-green-400 text-xs font-medium">
           {userData.recentCommits}
-        </Flex>
-      </Flex>
-      <Flex
-        style={{
-          justifyContent: "space-between",
-          background: GITHUB_COLORS.background.tertiary,
-          padding: `${SPACING.md} ${SPACING.xl}`,
-          borderRadius: RADIUS.sm,
-        }}
-      >
-        <Flex
-          style={{
-            color: GITHUB_COLORS.text.muted,
-            fontSize: TYPOGRAPHY.caption.fontSize,
-            fontWeight: TYPOGRAPHY.caption.fontWeight,
-          }}
-        >
-          🔄 Pull Requests
-        </Flex>
-        <Flex
-          style={{
-            color: GITHUB_COLORS.accent.blue,
-            fontSize: TYPOGRAPHY.caption.fontSize,
-            fontWeight: TYPOGRAPHY.label.fontWeight,
-          }}
-        >
-          {userData.recentPRs}
-        </Flex>
-      </Flex>
-      <Flex
-        style={{
-          justifyContent: "space-between",
-          background: GITHUB_COLORS.background.tertiary,
-          padding: `${SPACING.md} ${SPACING.xl}`,
-          borderRadius: RADIUS.sm,
-        }}
-      >
-        <span
-          style={{
-            color: GITHUB_COLORS.text.muted,
-            fontSize: TYPOGRAPHY.caption.fontSize,
-            fontWeight: TYPOGRAPHY.caption.fontWeight,
-          }}
-        >
-          🐛 Issues
         </span>
-        <span
-          style={{
-            color: GITHUB_COLORS.accent.red,
-            fontSize: TYPOGRAPHY.caption.fontSize,
-            fontWeight: TYPOGRAPHY.label.fontWeight,
-          }}
-        >
+      </Flex>
+      <Flex tw="justify-between bg-gray-900 px-3 py-2 rounded mb-2">
+        <span tw="text-gray-400 text-xs font-normal">🔄 Pull Requests</span>
+        <span tw="text-blue-400 text-xs font-medium">{userData.recentPRs}</span>
+      </Flex>
+      <Flex tw="justify-between bg-gray-900 px-3 py-2 rounded">
+        <span tw="text-gray-400 text-xs font-normal">🐛 Issues</span>
+        <span tw="text-red-400 text-xs font-medium">
           {userData.recentIssues}
         </span>
       </Flex>

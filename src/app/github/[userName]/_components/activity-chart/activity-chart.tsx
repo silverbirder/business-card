@@ -1,4 +1,3 @@
-import { GITHUB_COLORS, SPACING, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "../flex";
 import type { GitHubRepository } from "@/types/github";
 import { useActivityChart } from "./activity-chart.hook";
@@ -16,15 +15,8 @@ export const ActivityChart = ({ repos, width = 180, height = 60 }: Props) => {
   }
 
   return (
-    <Flex style={{ flexDirection: "column" }}>
-      <Flex
-        style={{
-          color: GITHUB_COLORS.text.muted,
-          fontSize: TYPOGRAPHY.bodySmall.fontSize,
-          fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-          marginBottom: SPACING.lg,
-        }}
-      >
+    <Flex tw="flex-col">
+      <Flex tw="text-gray-400 text-sm font-normal mb-2">
         Activity (12 months)
       </Flex>
       <svg width={width} height={height}>

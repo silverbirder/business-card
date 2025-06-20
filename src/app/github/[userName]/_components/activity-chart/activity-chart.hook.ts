@@ -1,4 +1,3 @@
-import { GITHUB_COLORS } from "@/lib/design-token";
 import type { GitHubRepository } from "@/types/github";
 import type { BarData } from "@/lib/chart-utils";
 
@@ -20,11 +19,11 @@ export type UseActivityChartProps = {
  * アクティビティレベルに基づいて色を取得
  */
 const getActivityColor = (level: number): string => {
-  if (level === 0) return GITHUB_COLORS.activity.none;
-  if (level <= 3) return GITHUB_COLORS.activity.low;
-  if (level <= 6) return GITHUB_COLORS.activity.medium;
-  if (level <= 8) return GITHUB_COLORS.activity.high;
-  return GITHUB_COLORS.activity.highest;
+  if (level === 0) return "#161b22";     // none
+  if (level <= 3) return "#0e4429";     // low
+  if (level <= 6) return "#006d32";     // medium
+  if (level <= 8) return "#26a641";     // high
+  return "#39d353";                     // highest
 };
 
 /**

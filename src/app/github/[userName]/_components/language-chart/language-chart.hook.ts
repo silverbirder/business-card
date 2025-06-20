@@ -1,4 +1,3 @@
-import { GITHUB_COLORS } from "@/lib/design-token";
 import type { SegmentData } from "@/lib/chart-utils";
 import { calculatePercentage } from "@/lib/chart-utils";
 
@@ -21,6 +20,9 @@ export type UseLanguageChartProps = {
   languages: [string, number][];
   width?: number;
 };
+
+// Language chart colors - GitHubテーマに近い色
+const LANGUAGE_COLORS = ["#58a6ff", "#f85149", "#56d364", "#d2a8ff", "#ffa657"] as const;
 
 /**
  * 言語バーのセグメントを生成
@@ -79,7 +81,7 @@ export const useLanguageChart = ({
   width = 180,
 }: UseLanguageChartProps): LanguageChartData => {
   const total = languages.reduce((sum, [, count]) => sum + count, 0);
-  const colors = GITHUB_COLORS.languageChart;
+  const colors = LANGUAGE_COLORS;
 
   const segments = generateLanguageSegments(languages, total, width, colors);
   const languageData = generateLanguageData(languages, total, colors);

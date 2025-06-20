@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 import type { UserHeaderData } from "@/types/github";
 
@@ -9,159 +8,62 @@ type Props = {
 
 export const UserHeader = ({ userData }: Props) => {
   return (
-    <Flex
-      style={{
-        background: GITHUB_COLORS.background.secondary,
-        margin: SPACING["3xl"],
-        marginBottom: SPACING.lg,
-        borderRadius: RADIUS.xl,
-        padding: SPACING["4xl"],
-        alignItems: "center",
-      }}
-    >
+    <Flex tw="bg-gray-800 mx-4 mb-2 rounded-xl px-5 py-5 flex items-center">
       <img
         src={userData.avatar}
-        style={{
-          width: "80px",
-          height: "80px",
-          borderRadius: RADIUS.full,
-          marginRight: SPACING["4xl"],
-        }}
+        tw="w-20 h-20 rounded-full mr-5"
         alt="User Avatar"
       />
-      <Flex style={{ flexDirection: "column", flex: 1 }}>
-        <Flex
-          style={{
-            color: GITHUB_COLORS.text.primary,
-            fontSize: TYPOGRAPHY.h1.fontSize,
-            fontWeight: TYPOGRAPHY.h1.fontWeight,
-          }}
-        >
-          {userData.name}
-        </Flex>
-        <Flex
-          style={{
-            color: GITHUB_COLORS.text.muted,
-            fontSize: TYPOGRAPHY.h4.fontSize,
-            fontWeight: TYPOGRAPHY.h4.fontWeight,
-            marginBottom: SPACING.lg,
-          }}
-        >
+      <Flex tw="flex-col flex-1">
+        <Flex tw="text-white text-2xl font-bold">{userData.name}</Flex>
+        <Flex tw="text-gray-400 text-base font-semibold mb-2">
           @{userData.username}
         </Flex>
-        <Flex
-          style={{
-            color: GITHUB_COLORS.text.secondary,
-            fontSize: TYPOGRAPHY.body.fontSize,
-            fontWeight: TYPOGRAPHY.body.fontWeight,
-            marginBottom: SPACING.lg,
-          }}
-        >
-          {userData.bio}
-        </Flex>
-        <Flex style={{ gap: SPACING["4xl"] }}>
+        <Flex tw="text-gray-300 text-sm font-normal mb-2">{userData.bio}</Flex>
+        <Flex tw="flex">
           {userData.location && (
-            <Flex
-              style={{
-                color: GITHUB_COLORS.text.muted,
-                fontSize: TYPOGRAPHY.bodySmall.fontSize,
-                fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-                alignItems: "center",
-              }}
-            >
+            <Flex tw="text-gray-400 text-xs font-normal flex items-center mr-5">
               📍 {userData.location}
             </Flex>
           )}
           {userData.company && (
-            <Flex
-              style={{
-                color: GITHUB_COLORS.text.muted,
-                fontSize: TYPOGRAPHY.bodySmall.fontSize,
-                fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-                alignItems: "center",
-              }}
-            >
+            <Flex tw="text-gray-400 text-xs font-normal flex items-center mr-5">
               🏢 {userData.company}
             </Flex>
           )}
           {userData.twitterUsername && (
-            <Flex
-              style={{
-                color: GITHUB_COLORS.text.muted,
-                fontSize: TYPOGRAPHY.bodySmall.fontSize,
-                fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-                alignItems: "center",
-              }}
-            >
+            <Flex tw="text-gray-400 text-xs font-normal flex items-center mr-5">
               🐦 @{userData.twitterUsername}
             </Flex>
           )}
           {userData.hireable && (
-            <Flex
-              style={{
-                color: GITHUB_COLORS.accent.green,
-                fontSize: TYPOGRAPHY.bodySmall.fontSize,
-                fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-                alignItems: "center",
-              }}
-            >
+            <Flex tw="text-green-400 text-xs font-normal flex items-center">
               💼 Available for hire
             </Flex>
           )}
         </Flex>
-        {userData.socialAccounts &&
-          userData.socialAccounts.length > 0 && (
-            <Flex
-              style={{
-                marginTop: SPACING.lg,
-                gap: SPACING.xl,
-              }}
-            >
-              {userData.socialAccounts
-                .slice(0, 3)
-                .map((account, index) => (
-                  <Flex
-                    key={index}
-                    style={{
-                      color: GITHUB_COLORS.accent.blue,
-                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
-                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-                      alignItems: "center",
-                    }}
-                  >
-                    🔗 {account.provider}
-                  </Flex>
-                ))}
-            </Flex>
-          )}
+        {userData.socialAccounts && userData.socialAccounts.length > 0 && (
+          <Flex tw="mt-2 flex">
+            {userData.socialAccounts.slice(0, 3).map((account, index) => (
+              <Flex
+                key={index}
+                tw="text-blue-400 text-xs font-normal flex items-center mr-3"
+              >
+                🔗 {account.provider}
+              </Flex>
+            ))}
+          </Flex>
+        )}
       </Flex>
       {userData.organizations.length > 0 && (
-        <Flex
-          style={{
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Flex
-            style={{
-              color: GITHUB_COLORS.text.primary,
-              fontSize: TYPOGRAPHY.bodySmall.fontSize,
-              fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-              marginBottom: SPACING.lg,
-            }}
-          >
-            Organizations
-          </Flex>
-          <Flex style={{ gap: SPACING.sm }}>
+        <Flex tw="flex-col items-center">
+          <Flex tw="text-white text-xs font-normal mb-2">Organizations</Flex>
+          <Flex tw="flex">
             {userData.organizations.slice(0, 3).map((org, index) => (
               <img
                 key={index}
                 src={org.avatar_url}
-                style={{
-                  width: "24px",
-                  height: "24px",
-                  borderRadius: RADIUS.sm,
-                }}
+                tw="w-6 h-6 rounded mr-1"
                 alt={org.login}
               />
             ))}

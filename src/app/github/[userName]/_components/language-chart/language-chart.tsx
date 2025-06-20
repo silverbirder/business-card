@@ -1,4 +1,3 @@
-import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "../flex";
 import { useLanguageChart } from "./language-chart.hook";
 
@@ -19,61 +18,34 @@ export const LanguageChart = ({ languages, width = 180 }: Props) => {
   const barHeight = 8;
 
   return (
-    <Flex style={{ flexDirection: "column" }}>
-      <svg
-        width={width}
-        height={barHeight}
-        style={{ marginBottom: SPACING["2xl"] }}
-      >
-        {segments.map((segment) => (
-          <rect
-            key={segment.key}
-            x={segment.x}
-            y={segment.y}
-            width={segment.width}
-            height={segment.height}
-            fill={segment.color}
-            rx={segment.rx}
-            ry={segment.ry}
-          />
-        ))}
-      </svg>
-      <Flex
-        style={{
-          flexDirection: "column",
-          gap: SPACING.md,
-        }}
-      >
+    <Flex tw="flex-col">
+      <Flex tw="mb-3">
+        <svg width={width} height={barHeight}>
+          {segments.map((segment) => (
+            <rect
+              key={segment.key}
+              x={segment.x}
+              y={segment.y}
+              width={segment.width}
+              height={segment.height}
+              fill={segment.color}
+              rx={segment.rx}
+              ry={segment.ry}
+            />
+          ))}
+        </svg>
+      </Flex>
+      <Flex tw="flex-col">
         {languageData.map((lang) => (
           <Flex
             key={lang.language}
-            style={{
-              alignItems: "center",
-              justifyContent: "space-between",
-              fontSize: TYPOGRAPHY.bodySmall.fontSize,
-              fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-              color: GITHUB_COLORS.text.muted,
-            }}
+            tw="items-center justify-between text-sm font-normal text-gray-400 mb-2"
           >
-            <Flex style={{ alignItems: "center" }}>
-              <div
-                style={{
-                  width: "8px",
-                  height: "8px",
-                  backgroundColor: lang.color,
-                  borderRadius: RADIUS.full,
-                  marginRight: SPACING.md,
-                }}
-              />
+            <Flex tw="items-center">
+              <Flex tw="w-2 h-2 rounded-full mr-2" />
               <Flex>{lang.language}</Flex>
             </Flex>
-            <Flex
-              style={{
-                color: GITHUB_COLORS.text.secondary,
-                fontSize: TYPOGRAPHY.caption.fontSize,
-                fontWeight: TYPOGRAPHY.caption.fontWeight,
-              }}
-            >
+            <Flex tw="text-gray-300 text-xs font-normal">
               {lang.percentage}%
             </Flex>
           </Flex>

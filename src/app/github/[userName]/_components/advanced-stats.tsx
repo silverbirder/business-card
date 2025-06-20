@@ -1,4 +1,3 @@
-import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { StatsCard } from "./stats-card";
 import { LanguageChart } from "./language-chart";
 import { ActivityChart } from "./activity-chart";
@@ -11,67 +10,29 @@ type Props = {
 
 export const AdvancedStats = ({ userData }: Props) => {
   return (
-    <Flex
-      style={{
-        flexDirection: "column",
-        background: GITHUB_COLORS.background.secondary,
-        borderRadius: RADIUS.xl,
-        padding: SPACING["4xl"],
-        flex: 1,
-      }}
-    >
-      <Flex
-        style={{
-          color: GITHUB_COLORS.text.primary,
-          fontSize: TYPOGRAPHY.h4.fontSize,
-          fontWeight: TYPOGRAPHY.h4.fontWeight,
-          marginBottom: SPACING["3xl"],
-        }}
-      >
-        Top Languages
-      </Flex>
-      <Flex style={{ marginBottom: SPACING["4xl"] }}>
+    <Flex tw="flex-col bg-gray-800 rounded-xl p-5 flex-1">
+      <Flex tw="text-white text-base font-semibold mb-4">Top Languages</Flex>
+      <Flex tw="mb-5">
         {userData.topLanguages.length > 0 ? (
           <LanguageChart languages={userData.topLanguages} width={250} />
         ) : (
-          <Flex
-            style={{
-              color: GITHUB_COLORS.text.muted,
-              fontSize: TYPOGRAPHY.bodySmall.fontSize,
-              fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-            }}
-          >
-            No language data
-          </Flex>
+          <Flex tw="text-gray-400 text-sm">No language data</Flex>
         )}
       </Flex>
-      <Flex
-        style={{
-          color: GITHUB_COLORS.text.primary,
-          fontSize: TYPOGRAPHY.h4.fontSize,
-          fontWeight: TYPOGRAPHY.h4.fontWeight,
-          marginBottom: SPACING["3xl"],
-        }}
-      >
+      <Flex tw="text-white text-base font-semibold mb-4">
         Advanced Statistics
       </Flex>
-      <Flex
-        style={{
-          flexDirection: "column",
-          gap: SPACING.lg,
-          marginBottom: SPACING["4xl"],
-        }}
-      >
+      <Flex tw="flex-col mb-5">
         <StatsCard
           label="Follower-to-Following Ratio"
           value={userData.followerToFollowingRatio.toFixed(2)}
-          color={GITHUB_COLORS.accent.blue}
+          color="#58a6ff"
         />
         {Object.keys(userData.packageEcosystems).length > 0 && (
           <StatsCard
             label="Package Ecosystems"
             value={Object.keys(userData.packageEcosystems).length}
-            color={GITHUB_COLORS.accent.darkYellow}
+            color="#f39c12"
           />
         )}
         <StatsCard
@@ -83,7 +44,7 @@ export const AdvancedStats = ({ userData }: Props) => {
                   ?.substring(0, 3) ?? "N/A")
               : "N/A"
           }
-          color={GITHUB_COLORS.accent.green}
+          color="#56d364"
         />
         <StatsCard
           label="Peak Activity Month"
@@ -94,31 +55,16 @@ export const AdvancedStats = ({ userData }: Props) => {
                 )[0]?.[0] ?? "N/A")
               : "N/A"
           }
-          color={GITHUB_COLORS.accent.orange}
+          color="#ffa657"
         />
       </Flex>
-      <Flex
-        style={{
-          color: GITHUB_COLORS.text.primary,
-          fontSize: TYPOGRAPHY.h4.fontSize,
-          fontWeight: TYPOGRAPHY.h4.fontWeight,
-          marginBottom: SPACING["3xl"],
-        }}
-      >
+      <Flex tw="text-white text-base font-semibold mb-4">
         Repository Activity
       </Flex>
       {userData.repos.length > 0 ? (
         <ActivityChart repos={userData.repos} width={250} height={80} />
       ) : (
-        <Flex
-          style={{
-            color: GITHUB_COLORS.text.muted,
-            fontSize: TYPOGRAPHY.bodySmall.fontSize,
-            fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
-          }}
-        >
-          No activity data
-        </Flex>
+        <Flex tw="text-gray-400 text-sm">No activity data</Flex>
       )}
     </Flex>
   );

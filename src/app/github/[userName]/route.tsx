@@ -5,7 +5,6 @@ import {
   fetchUserStats,
   fetchUserFollowing,
 } from "@/lib/github";
-import { GITHUB_COLORS, SPACING } from "@/lib/design-token";
 import {
   UserHeader,
   GitHubStats,
@@ -94,26 +93,18 @@ export async function GET(
   try {
     return new ImageResponse(
       (
-        <Flex
-          style={{
-            height: "100%",
-            width: "100%",
-            background: GITHUB_COLORS.background.primary,
-            fontFamily: "Inter",
-            flexDirection: "column",
-          }}
-        >
+        <Flex tw="h-full w-full bg-gray-900 font-sans flex-col">
           <UserHeader userData={userData} />
-          <Flex
-            style={{
-              margin: `0 ${SPACING["3xl"]} ${SPACING["3xl"]} ${SPACING["3xl"]}`,
-              gap: SPACING["3xl"],
-              flex: 1,
-            }}
-          >
-            <GitHubStats userData={userData} />
-            <AdvancedStats userData={userData} />
-            <RecentActivity userData={userData} />
+          <Flex tw="mx-4 mb-4 flex-1">
+            <Flex tw="flex-1 mr-4">
+              <GitHubStats userData={userData} />
+            </Flex>
+            <Flex tw="flex-1 mr-4">
+              <AdvancedStats userData={userData} />
+            </Flex>
+            <Flex tw="flex-1">
+              <RecentActivity userData={userData} />
+            </Flex>
           </Flex>
         </Flex>
       ),

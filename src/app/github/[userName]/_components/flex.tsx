@@ -1,19 +1,10 @@
-import type { ReactNode, CSSProperties } from "react";
+import type { ReactNode } from "react";
 
 type Props = {
-  children: ReactNode;
-  style?: CSSProperties;
+  children?: ReactNode;
+  tw?: string;
 };
 
-export const Flex = ({ children, style = {} }: Props) => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        ...style,
-      }}
-    >
-      {children}
-    </div>
-  );
+export const Flex = ({ children, tw }: Props) => {
+  return <div tw={`flex ${tw ?? ""}`}>{children}</div>;
 };
