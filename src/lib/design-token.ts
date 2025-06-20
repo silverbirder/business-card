@@ -66,3 +66,60 @@ export const RADIUS = {
   xl: "12px",
   full: "999px",
 } as const;
+
+// Typography design tokens
+export const TYPOGRAPHY = {
+  // Headings
+  h1: {
+    fontSize: "32px",
+    fontWeight: "700",
+  },
+  h2: {
+    fontSize: "24px",
+    fontWeight: "600",
+  },
+  h3: {
+    fontSize: "20px",
+    fontWeight: "600",
+  },
+  h4: {
+    fontSize: "16px",
+    fontWeight: "600",
+  },
+
+  // Body text
+  body: {
+    fontSize: "14px",
+    fontWeight: "400",
+  },
+  bodySmall: {
+    fontSize: "12px",
+    fontWeight: "400",
+  },
+
+  // Code
+  code: {
+    fontSize: "14px",
+    fontWeight: "400",
+  },
+  codeSmall: {
+    fontSize: "12px",
+    fontWeight: "400",
+  },
+
+  // Labels and buttons
+  label: {
+    fontSize: "12px",
+    fontWeight: "500",
+  },
+  button: {
+    fontSize: "14px",
+    fontWeight: "500",
+  },
+
+  // Caption
+  caption: {
+    fontSize: "11px",
+    fontWeight: "400",
+  },
+} as const;

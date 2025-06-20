@@ -7,7 +7,7 @@ import {
   fetchUserStats,
   fetchUserFollowing,
 } from "@/lib/github";
-import { GITHUB_COLORS, SPACING, RADIUS } from "@/lib/design-token";
+import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 
 export const runtime = "edge";
 
@@ -70,7 +70,8 @@ function generateLanguageChart(languages: [string, number][], width = 180) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                fontSize: "10px",
+                fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                 color: GITHUB_COLORS.text.muted,
               }}
             >
@@ -87,7 +88,11 @@ function generateLanguageChart(languages: [string, number][], width = 180) {
                 <span>{language}</span>
               </div>
               <span
-                style={{ color: GITHUB_COLORS.text.secondary, fontSize: "9px" }}
+                style={{
+                  color: GITHUB_COLORS.text.secondary,
+                  fontSize: TYPOGRAPHY.caption.fontSize,
+                  fontWeight: TYPOGRAPHY.caption.fontWeight,
+                }}
               >
                 {percentage}%
               </span>
@@ -130,7 +135,8 @@ function generateActivityChart(
         style={{
           display: "flex",
           color: GITHUB_COLORS.text.muted,
-          fontSize: "10px",
+          fontSize: TYPOGRAPHY.bodySmall.fontSize,
+          fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
           marginBottom: SPACING.lg,
         }}
       >
@@ -281,8 +287,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "28px",
-                  fontWeight: "bold",
+                  fontSize: TYPOGRAPHY.h1.fontSize,
+                  fontWeight: TYPOGRAPHY.h1.fontWeight,
                 }}
               >
                 {userData.name}
@@ -291,7 +297,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.muted,
-                  fontSize: "16px",
+                  fontSize: TYPOGRAPHY.h4.fontSize,
+                  fontWeight: TYPOGRAPHY.h4.fontWeight,
                   marginBottom: SPACING.lg,
                 }}
               >
@@ -301,7 +308,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.secondary,
-                  fontSize: "14px",
+                  fontSize: TYPOGRAPHY.body.fontSize,
+                  fontWeight: TYPOGRAPHY.body.fontWeight,
                   marginBottom: SPACING.lg,
                 }}
               >
@@ -313,7 +321,8 @@ export async function GET(
                     style={{
                       display: "flex",
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                       alignItems: "center",
                     }}
                   >
@@ -325,7 +334,8 @@ export async function GET(
                     style={{
                       display: "flex",
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                       alignItems: "center",
                     }}
                   >
@@ -337,7 +347,8 @@ export async function GET(
                     style={{
                       display: "flex",
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                       alignItems: "center",
                     }}
                   >
@@ -349,7 +360,8 @@ export async function GET(
                     style={{
                       display: "flex",
                       color: GITHUB_COLORS.accent.green,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                       alignItems: "center",
                     }}
                   >
@@ -374,7 +386,8 @@ export async function GET(
                           style={{
                             display: "flex",
                             color: GITHUB_COLORS.accent.blue,
-                            fontSize: "10px",
+                            fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                            fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                             alignItems: "center",
                           }}
                         >
@@ -396,7 +409,8 @@ export async function GET(
                   style={{
                     display: "flex",
                     color: GITHUB_COLORS.text.primary,
-                    fontSize: "12px",
+                    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                    fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     marginBottom: SPACING.lg,
                   }}
                 >
@@ -441,8 +455,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "16px",
-                  fontWeight: "bold",
+                  fontSize: TYPOGRAPHY.h4.fontSize,
+                  fontWeight: TYPOGRAPHY.h4.fontWeight,
                   marginBottom: SPACING["3xl"],
                 }}
               >
@@ -467,7 +481,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Repositories
@@ -475,8 +490,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.blue,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     {userData.publicRepos}
@@ -494,7 +509,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Followers
@@ -502,8 +518,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.red,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     {userData.followers}
@@ -521,7 +537,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Following
@@ -529,8 +546,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.green,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     {userData.following}
@@ -548,7 +565,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Total Stars
@@ -556,8 +574,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.orange,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     ⭐ {userData.totalStars}
@@ -575,7 +593,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Total Forks
@@ -583,8 +602,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.purple,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     🍴 {userData.totalForks}
@@ -602,7 +621,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Gists
@@ -610,8 +630,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.blue,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     📝 {userData.totalGists}
@@ -629,7 +649,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Starred
@@ -637,8 +658,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.yellow,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     ⭐ {userData.starredCount}
@@ -656,7 +677,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Watching
@@ -664,8 +686,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.lightBlue,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     👁️ {userData.subscriptionsCount}
@@ -683,7 +705,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     SSH Keys
@@ -691,8 +714,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.darkPurple,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     🔑 {userData.publicKeysCount}
@@ -710,7 +733,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     GPG Keys
@@ -718,8 +742,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.darkOrange,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     🛡️ {userData.gpgKeysCount}
@@ -737,7 +761,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     SSH Signing Keys
@@ -745,8 +770,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.darkPurple,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     🔐 {userData.sshSigningKeysCount}
@@ -764,7 +789,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Packages
@@ -772,8 +798,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.darkYellow,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     📦 {userData.packagesCount}
@@ -791,7 +817,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Following/Followers
@@ -799,8 +826,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.darkRed,
-                      fontSize: "12px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     📊 {userData.followerToFollowingRatio.toFixed(1)}
@@ -819,7 +846,8 @@ export async function GET(
                     <span
                       style={{
                         color: GITHUB_COLORS.text.muted,
-                        fontSize: "12px",
+                        fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                        fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                       }}
                     >
                       Member Since
@@ -827,8 +855,8 @@ export async function GET(
                     <span
                       style={{
                         color: GITHUB_COLORS.accent.darkGreen,
-                        fontSize: "12px",
-                        fontWeight: "bold",
+                        fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                        fontWeight: TYPOGRAPHY.label.fontWeight,
                       }}
                     >
                       {new Date(userData.createdAt).getFullYear()}
@@ -851,8 +879,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "16px",
-                  fontWeight: "bold",
+                  fontSize: TYPOGRAPHY.h4.fontSize,
+                  fontWeight: TYPOGRAPHY.h4.fontWeight,
                   marginBottom: SPACING["3xl"],
                 }}
               >
@@ -866,7 +894,8 @@ export async function GET(
                     style={{
                       display: "flex",
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "12px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     No language data
@@ -877,8 +906,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "16px",
-                  fontWeight: "bold",
+                  fontSize: TYPOGRAPHY.h4.fontSize,
+                  fontWeight: TYPOGRAPHY.h4.fontWeight,
                   marginBottom: SPACING["3xl"],
                 }}
               >
@@ -904,7 +933,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "10px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Follower-to-Following Ratio
@@ -912,8 +942,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.blue,
-                      fontSize: "10px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     {userData.followerToFollowingRatio.toFixed(2)}
@@ -932,7 +962,8 @@ export async function GET(
                     <span
                       style={{
                         color: GITHUB_COLORS.text.muted,
-                        fontSize: "10px",
+                        fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                        fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                       }}
                     >
                       Package Ecosystems
@@ -940,8 +971,8 @@ export async function GET(
                     <span
                       style={{
                         color: GITHUB_COLORS.accent.darkYellow,
-                        fontSize: "10px",
-                        fontWeight: "bold",
+                        fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                        fontWeight: TYPOGRAPHY.label.fontWeight,
                       }}
                     >
                       {Object.keys(userData.packageEcosystems).length}
@@ -960,7 +991,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "10px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Most Active Day
@@ -968,8 +1000,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.green,
-                      fontSize: "10px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     {Object.entries(userData.dayOfWeekStats).length > 0
@@ -991,7 +1023,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "10px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                     }}
                   >
                     Peak Activity Month
@@ -999,8 +1032,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.orange,
-                      fontSize: "10px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     {Object.entries(userData.monthlyActivity).length > 0
@@ -1015,9 +1048,9 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  marginBottom: "15px",
+                  fontSize: TYPOGRAPHY.h4.fontSize,
+                  fontWeight: TYPOGRAPHY.h4.fontWeight,
+                  marginBottom: SPACING["3xl"],
                 }}
               >
                 Repository Activity
@@ -1029,7 +1062,8 @@ export async function GET(
                   style={{
                     display: "flex",
                     color: GITHUB_COLORS.text.muted,
-                    fontSize: "12px",
+                    fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                    fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
                   }}
                 >
                   No activity data
@@ -1050,8 +1084,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "16px",
-                  fontWeight: "bold",
+                  fontSize: TYPOGRAPHY.h4.fontSize,
+                  fontWeight: TYPOGRAPHY.h4.fontWeight,
                   marginBottom: SPACING["3xl"],
                 }}
               >
@@ -1077,7 +1111,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "11px",
+                      fontSize: TYPOGRAPHY.caption.fontSize,
+                      fontWeight: TYPOGRAPHY.caption.fontWeight,
                     }}
                   >
                     💻 Commits
@@ -1085,8 +1120,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.green,
-                      fontSize: "11px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.caption.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     {userData.recentCommits}
@@ -1104,7 +1139,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "11px",
+                      fontSize: TYPOGRAPHY.caption.fontSize,
+                      fontWeight: TYPOGRAPHY.caption.fontWeight,
                     }}
                   >
                     🔄 Pull Requests
@@ -1112,8 +1148,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.blue,
-                      fontSize: "11px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.caption.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     {userData.recentPRs}
@@ -1131,7 +1167,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.text.muted,
-                      fontSize: "11px",
+                      fontSize: TYPOGRAPHY.caption.fontSize,
+                      fontWeight: TYPOGRAPHY.caption.fontWeight,
                     }}
                   >
                     🐛 Issues
@@ -1139,8 +1176,8 @@ export async function GET(
                   <span
                     style={{
                       color: GITHUB_COLORS.accent.red,
-                      fontSize: "11px",
-                      fontWeight: "bold",
+                      fontSize: TYPOGRAPHY.caption.fontSize,
+                      fontWeight: TYPOGRAPHY.label.fontWeight,
                     }}
                   >
                     {userData.recentIssues}
@@ -1151,9 +1188,9 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  marginBottom: "10px",
+                  fontSize: TYPOGRAPHY.body.fontSize,
+                  fontWeight: TYPOGRAPHY.body.fontWeight,
+                  marginBottom: SPACING["2xl"],
                 }}
               >
                 Activity Types (Recent)
@@ -1162,8 +1199,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "4px",
-                  marginBottom: "15px",
+                  gap: SPACING.sm,
+                  marginBottom: SPACING["3xl"],
                 }}
               >
                 {Object.entries(userData.eventTypeStats)
@@ -1183,7 +1220,8 @@ export async function GET(
                       <span
                         style={{
                           color: GITHUB_COLORS.text.muted,
-                          fontSize: "9px",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.caption.fontWeight,
                         }}
                       >
                         {eventType.replace("Event", "")}
@@ -1191,8 +1229,8 @@ export async function GET(
                       <span
                         style={{
                           color: GITHUB_COLORS.accent.blue,
-                          fontSize: "9px",
-                          fontWeight: "bold",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.label.fontWeight,
                         }}
                       >
                         {count}
@@ -1204,9 +1242,9 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  marginBottom: "10px",
+                  fontSize: TYPOGRAPHY.body.fontSize,
+                  fontWeight: TYPOGRAPHY.body.fontWeight,
+                  marginBottom: SPACING["2xl"],
                 }}
               >
                 Active Days (Weekly)
@@ -1215,8 +1253,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "4px",
-                  marginBottom: "15px",
+                  gap: SPACING.sm,
+                  marginBottom: SPACING["3xl"],
                 }}
               >
                 {Object.entries(userData.dayOfWeekStats)
@@ -1236,7 +1274,8 @@ export async function GET(
                       <span
                         style={{
                           color: GITHUB_COLORS.text.muted,
-                          fontSize: "9px",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.caption.fontWeight,
                         }}
                       >
                         {day.substring(0, 3)}
@@ -1244,8 +1283,8 @@ export async function GET(
                       <span
                         style={{
                           color: GITHUB_COLORS.accent.green,
-                          fontSize: "9px",
-                          fontWeight: "bold",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.label.fontWeight,
                         }}
                       >
                         {count}
@@ -1257,9 +1296,9 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  marginBottom: "10px",
+                  fontSize: TYPOGRAPHY.body.fontSize,
+                  fontWeight: TYPOGRAPHY.body.fontWeight,
+                  marginBottom: SPACING["2xl"],
                 }}
               >
                 Top Active Months
@@ -1268,8 +1307,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "4px",
-                  marginBottom: "15px",
+                  gap: SPACING.sm,
+                  marginBottom: SPACING["3xl"],
                 }}
               >
                 {Object.entries(userData.monthlyActivity)
@@ -1289,7 +1328,8 @@ export async function GET(
                       <span
                         style={{
                           color: GITHUB_COLORS.text.muted,
-                          fontSize: "9px",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.caption.fontWeight,
                         }}
                       >
                         {month}
@@ -1297,8 +1337,8 @@ export async function GET(
                       <span
                         style={{
                           color: GITHUB_COLORS.accent.orange,
-                          fontSize: "9px",
-                          fontWeight: "bold",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.label.fontWeight,
                         }}
                       >
                         {count}
@@ -1310,9 +1350,9 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  marginBottom: "10px",
+                  fontSize: TYPOGRAPHY.body.fontSize,
+                  fontWeight: TYPOGRAPHY.body.fontWeight,
+                  marginBottom: SPACING["2xl"],
                 }}
               >
                 Latest Repositories
@@ -1321,8 +1361,8 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "6px",
-                  marginBottom: "15px",
+                  gap: SPACING.md,
+                  marginBottom: SPACING["3xl"],
                 }}
               >
                 {userData.repos.slice(0, 3).map((repo, index) => (
@@ -1340,9 +1380,9 @@ export async function GET(
                       style={{
                         display: "flex",
                         color: GITHUB_COLORS.accent.blue,
-                        fontSize: "10px",
-                        fontWeight: "bold",
-                        marginBottom: "2px",
+                        fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                        fontWeight: TYPOGRAPHY.label.fontWeight,
+                        marginBottom: SPACING.xs,
                       }}
                     >
                       {repo.name.length > 18
@@ -1353,8 +1393,9 @@ export async function GET(
                       style={{
                         display: "flex",
                         color: GITHUB_COLORS.text.muted,
-                        fontSize: "8px",
-                        marginBottom: "4px",
+                        fontSize: TYPOGRAPHY.caption.fontSize,
+                        fontWeight: TYPOGRAPHY.caption.fontWeight,
+                        marginBottom: SPACING.sm,
                       }}
                     >
                       {repo.description && repo.description.length > 25
@@ -1370,7 +1411,8 @@ export async function GET(
                       <span
                         style={{
                           color: GITHUB_COLORS.text.muted,
-                          fontSize: "8px",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.caption.fontWeight,
                         }}
                       >
                         {repo.language ?? "N/A"}
@@ -1378,7 +1420,8 @@ export async function GET(
                       <span
                         style={{
                           color: GITHUB_COLORS.accent.orange,
-                          fontSize: "8px",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.caption.fontWeight,
                         }}
                       >
                         ⭐ {repo.stargazers_count ?? 0}
@@ -1393,9 +1436,9 @@ export async function GET(
                     style={{
                       display: "flex",
                       color: GITHUB_COLORS.text.primary,
-                      fontSize: "14px",
-                      fontWeight: "bold",
-                      marginBottom: "10px",
+                      fontSize: TYPOGRAPHY.body.fontSize,
+                      fontWeight: TYPOGRAPHY.body.fontWeight,
+                      marginBottom: SPACING["2xl"],
                     }}
                   >
                     Package Ecosystems
@@ -1404,8 +1447,8 @@ export async function GET(
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      gap: "4px",
-                      marginBottom: "15px",
+                      gap: SPACING.sm,
+                      marginBottom: SPACING["3xl"],
                     }}
                   >
                     {Object.entries(userData.packageEcosystems)
@@ -1425,7 +1468,8 @@ export async function GET(
                           <span
                             style={{
                               color: GITHUB_COLORS.text.muted,
-                              fontSize: "9px",
+                              fontSize: TYPOGRAPHY.caption.fontSize,
+                              fontWeight: TYPOGRAPHY.caption.fontWeight,
                             }}
                           >
                             📦 {ecosystem}
@@ -1433,8 +1477,8 @@ export async function GET(
                           <span
                             style={{
                               color: GITHUB_COLORS.accent.darkYellow,
-                              fontSize: "9px",
-                              fontWeight: "bold",
+                              fontSize: TYPOGRAPHY.caption.fontSize,
+                              fontWeight: TYPOGRAPHY.label.fontWeight,
                             }}
                           >
                             {count}
@@ -1448,9 +1492,9 @@ export async function GET(
                 style={{
                   display: "flex",
                   color: GITHUB_COLORS.text.primary,
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  marginBottom: "10px",
+                  fontSize: TYPOGRAPHY.body.fontSize,
+                  fontWeight: TYPOGRAPHY.body.fontWeight,
+                  marginBottom: SPACING["2xl"],
                 }}
               >
                 Recently Starred
@@ -1459,7 +1503,7 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "6px",
+                  gap: SPACING.md,
                 }}
               >
                 {userData.starred.slice(0, 2).map((starredItem, index) => {
@@ -1480,9 +1524,9 @@ export async function GET(
                         style={{
                           display: "flex",
                           color: GITHUB_COLORS.accent.yellow,
-                          fontSize: "9px",
-                          fontWeight: "bold",
-                          marginBottom: "2px",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.label.fontWeight,
+                          marginBottom: SPACING.xs,
                         }}
                       >
                         {repo.name.length > 18
@@ -1493,8 +1537,9 @@ export async function GET(
                         style={{
                           display: "flex",
                           color: GITHUB_COLORS.text.muted,
-                          fontSize: "7px",
-                          marginBottom: "3px",
+                          fontSize: TYPOGRAPHY.caption.fontSize,
+                          fontWeight: TYPOGRAPHY.caption.fontWeight,
+                          marginBottom: SPACING.xs,
                         }}
                       >
                         {repo.description && repo.description.length > 25
@@ -1510,7 +1555,8 @@ export async function GET(
                         <span
                           style={{
                             color: GITHUB_COLORS.text.muted,
-                            fontSize: "7px",
+                            fontSize: TYPOGRAPHY.caption.fontSize,
+                            fontWeight: TYPOGRAPHY.caption.fontWeight,
                           }}
                         >
                           {repo.language ?? "N/A"}
@@ -1518,7 +1564,8 @@ export async function GET(
                         <span
                           style={{
                             color: GITHUB_COLORS.accent.orange,
-                            fontSize: "7px",
+                            fontSize: TYPOGRAPHY.caption.fontSize,
+                            fontWeight: TYPOGRAPHY.caption.fontWeight,
                           }}
                         >
                           ⭐ {repo.stargazers_count ?? 0}
@@ -1534,10 +1581,10 @@ export async function GET(
                     style={{
                       display: "flex",
                       color: GITHUB_COLORS.text.primary,
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      marginTop: "15px",
-                      marginBottom: "8px",
+                      fontSize: TYPOGRAPHY.bodySmall.fontSize,
+                      fontWeight: TYPOGRAPHY.bodySmall.fontWeight,
+                      marginTop: SPACING["3xl"],
+                      marginBottom: SPACING.lg,
                     }}
                   >
                     Recent Public Events ({userData.receivedPublicEventsCount})
@@ -1554,7 +1601,8 @@ export async function GET(
                     <span
                       style={{
                         color: GITHUB_COLORS.text.muted,
-                        fontSize: "8px",
+                        fontSize: TYPOGRAPHY.caption.fontSize,
+                        fontWeight: TYPOGRAPHY.caption.fontWeight,
                       }}
                     >
                       📡 Monitoring activity
