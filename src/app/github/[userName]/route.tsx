@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/og";
 import { type NextRequest } from "next/server";
 import {
