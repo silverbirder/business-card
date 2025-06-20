@@ -1,353 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "@vercel/og";
 import { type NextRequest } from "next/server";
-import { Octokit } from "octokit";
-import { env } from "@/env";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
+import { fetchGitHubUser, fetchUserStats, fetchUserFollowing } from "@/lib/github";
 
 export const runtime = "edge";
-
-function createOctokit() {
-  return new Octokit({
-    auth: env.GITHUB_TOKEN,
-  });
-}
-
-async function fetchGitHubUser(
-  userName: string,
-): Promise<
-  RestEndpointMethodTypes["users"]["getByUsername"]["response"]["data"] | null
-> {
-  try {
-    const octokit = createOctokit();
-    const { data: user } = await octokit.rest.users.getByUsername({
-      username: userName,
-    });
-    return user;
-  } catch (error) {
-    console.error("Error fetching GitHub user:", error);
-    return null;
-  }
-}
-
-async function fetchUserRepos(
-  userName: string,
-): Promise<
-  RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"]
-> {
-  try {
-    const octokit = createOctokit();
-    const { data: repos } = await octokit.rest.repos.listForUser({
-      username: userName,
-      sort: "updated",
-      per_page: 10,
-    });
-    return repos;
-  } catch (error) {
-    console.error("Error fetching user repos:", error);
-    return [];
-  }
-}
-
-async function fetchUserGists(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: gists } = await octokit.rest.gists.listForUser({
-      username: userName,
-      per_page: 10,
-    });
-    return gists;
-  } catch (error) {
-    console.error("Error fetching user gists:", error);
-    return [];
-  }
-}
-
-async function fetchUserOrganizations(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: orgs } = await octokit.rest.orgs.listForUser({
-      username: userName,
-      per_page: 10,
-    });
-    return orgs;
-  } catch (error) {
-    console.error("Error fetching user organizations:", error);
-    return [];
-  }
-}
-
-async function fetchUserEvents(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: events } =
-      await octokit.rest.activity.listPublicEventsForUser({
-        username: userName,
-        per_page: 30,
-      });
-    return events;
-  } catch (error) {
-    console.error("Error fetching user events:", error);
-    return [];
-  }
-}
-
-async function fetchUserFollowing(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: following } = await octokit.rest.users.listFollowingForUser({
-      username: userName,
-      per_page: 1,
-    });
-    return following.length;
-  } catch (error) {
-    console.error("Error fetching user following:", error);
-    return 0;
-  }
-}
-
-async function fetchUserStarred(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: starred } =
-      await octokit.rest.activity.listReposStarredByUser({
-        username: userName,
-        per_page: 10,
-        sort: "created",
-      });
-    return starred;
-  } catch (error) {
-    console.error("Error fetching user starred repos:", error);
-    return [];
-  }
-}
-
-async function fetchUserSubscriptions(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: subscriptions } =
-      await octokit.rest.activity.listReposWatchedByUser({
-        username: userName,
-        per_page: 10,
-      });
-    return subscriptions;
-  } catch (error) {
-    console.error("Error fetching user subscriptions:", error);
-    return [];
-  }
-}
-
-async function fetchUserReceivedEvents(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: receivedEvents } =
-      await octokit.rest.activity.listReceivedEventsForUser({
-        username: userName,
-        per_page: 30,
-      });
-    return receivedEvents;
-  } catch (error) {
-    console.error("Error fetching user received events:", error);
-    return [];
-  }
-}
-
-async function fetchUserPublicKeys(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: keys } = await octokit.rest.users.listPublicKeysForUser({
-      username: userName,
-    });
-    return keys;
-  } catch (error) {
-    console.error("Error fetching user public keys:", error);
-    return [];
-  }
-}
-
-async function fetchUserGpgKeys(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: gpgKeys } = await octokit.rest.users.listGpgKeysForUser({
-      username: userName,
-    });
-    return gpgKeys;
-  } catch (error) {
-    console.error("Error fetching user GPG keys:", error);
-    return [];
-  }
-}
-
-async function fetchUserSocialAccounts(userName: string) {
-  try {
-    const octokit = createOctokit();
-    const { data: socialAccounts } =
-      await octokit.rest.users.listSocialAccountsForUser({
-        username: userName,
-      });
-    return socialAccounts;
-  } catch (error) {
-    console.error("Error fetching user social accounts:", error);
-    return [];
-  }
-}
-
-async function fetchUserStats(userName: string) {
-  try {
-    const [
-      repos,
-      gists,
-      orgs,
-      events,
-      starred,
-      subscriptions,
-      receivedEvents,
-      publicKeys,
-      gpgKeys,
-      socialAccounts,
-    ] = await Promise.all([
-      fetchUserRepos(userName),
-      fetchUserGists(userName),
-      fetchUserOrganizations(userName),
-      fetchUserEvents(userName),
-      fetchUserStarred(userName),
-      fetchUserSubscriptions(userName),
-      fetchUserReceivedEvents(userName),
-      fetchUserPublicKeys(userName),
-      fetchUserGpgKeys(userName),
-      fetchUserSocialAccounts(userName),
-    ]);
-
-    const languageStats: Record<string, number> = {};
-    let totalStars = 0;
-    let totalForks = 0;
-
-    for (const repo of repos) {
-      if (repo.language) {
-        languageStats[repo.language] = (languageStats[repo.language] ?? 0) + 1;
-      }
-      totalStars += repo.stargazers_count ?? 0;
-      totalForks += repo.forks_count ?? 0;
-    }
-
-    const topLanguages = Object.entries(languageStats)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 3);
-
-    // Recent activity analysis
-    const recentCommits = events.filter(
-      (event) =>
-        event.type === "PushEvent" &&
-        event.created_at &&
-        new Date(event.created_at).getTime() >
-          Date.now() - 30 * 24 * 60 * 60 * 1000,
-    ).length;
-
-    const recentPRs = events.filter(
-      (event) =>
-        event.type === "PullRequestEvent" &&
-        event.created_at &&
-        new Date(event.created_at).getTime() >
-          Date.now() - 30 * 24 * 60 * 60 * 1000,
-    ).length;
-
-    const recentIssues = events.filter(
-      (event) =>
-        event.type === "IssuesEvent" &&
-        event.created_at &&
-        new Date(event.created_at).getTime() >
-          Date.now() - 30 * 24 * 60 * 60 * 1000,
-    ).length;
-
-    const starredLanguageStats: Record<string, number> = {};
-    for (const starredRepo of starred) {
-      const language =
-        "language" in starredRepo
-          ? starredRepo.language
-          : starredRepo.repo?.language;
-      if (language) {
-        starredLanguageStats[language] =
-          (starredLanguageStats[language] ?? 0) + 1;
-      }
-    }
-
-    const yearlyCommits: Record<number, number> = {};
-
-    events.forEach((event) => {
-      if (event.type === "PushEvent" && event.created_at) {
-        const year = new Date(event.created_at).getFullYear();
-        yearlyCommits[year] = (yearlyCommits[year] ?? 0) + 1;
-      }
-    });
-
-    const eventTypeStats = events.reduce(
-      (acc, event) => {
-        if (event.type) {
-          acc[event.type] = (acc[event.type] ?? 0) + 1;
-        }
-        return acc;
-      },
-      {} as Record<string, number>,
-    );
-
-    return {
-      totalStars,
-      totalForks,
-      topLanguages,
-      repoCount: repos.length,
-      repos,
-      gists,
-      organizations: orgs,
-      recentCommits,
-      recentPRs,
-      recentIssues,
-      totalGists: gists.length,
-      totalOrganizations: orgs.length,
-      starred,
-      starredCount: starred.length,
-      starredLanguageStats,
-      subscriptions,
-      subscriptionsCount: subscriptions.length,
-      receivedEvents,
-      publicKeys,
-      publicKeysCount: publicKeys.length,
-      gpgKeys,
-      gpgKeysCount: gpgKeys.length,
-      socialAccounts,
-      yearlyCommits,
-      eventTypeStats,
-    };
-  } catch (error) {
-    console.error("Error fetching user stats:", error);
-    return {
-      totalStars: 0,
-      totalForks: 0,
-      topLanguages: [],
-      repoCount: 0,
-      repos: [],
-      gists: [],
-      organizations: [],
-      recentCommits: 0,
-      recentPRs: 0,
-      recentIssues: 0,
-      totalGists: 0,
-      totalOrganizations: 0,
-      starred: [],
-      starredCount: 0,
-      starredLanguageStats: {},
-      subscriptions: [],
-      subscriptionsCount: 0,
-      receivedEvents: [],
-      publicKeys: [],
-      publicKeysCount: 0,
-      gpgKeys: [],
-      gpgKeysCount: 0,
-      socialAccounts: [],
-      yearlyCommits: {},
-      eventTypeStats: {},
-    };
-  }
-}
 
 function generateLanguageChart(languages: [string, number][], width = 180) {
   if (languages.length === 0) {
@@ -545,6 +202,19 @@ export async function GET(
     socialAccounts: userStats.socialAccounts,
     yearlyCommits: userStats.yearlyCommits,
     eventTypeStats: userStats.eventTypeStats,
+    followersData: userStats.followers,
+    followersCount: userStats.followersCount,
+    receivedPublicEvents: userStats.receivedPublicEvents,
+    receivedPublicEventsCount: userStats.receivedPublicEventsCount,
+    sshSigningKeys: userStats.sshSigningKeys,
+    sshSigningKeysCount: userStats.sshSigningKeysCount,
+    packages: userStats.packages,
+    packagesCount: userStats.packagesCount,
+    followingCount: userStats.followingCount,
+    followerToFollowingRatio: userStats.followerToFollowingRatio,
+    dayOfWeekStats: userStats.dayOfWeekStats,
+    monthlyActivity: userStats.monthlyActivity,
+    packageEcosystems: userStats.packageEcosystems,
     createdAt: gitHubUser.created_at,
     updatedAt: gitHubUser.updated_at,
     type: gitHubUser.type,
@@ -984,6 +654,72 @@ export async function GET(
                     🛡️ {userData.gpgKeysCount}
                   </span>
                 </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                    SSH Signing Keys
+                  </span>
+                  <span
+                    style={{
+                      color: "#9b59b6",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    🔐 {userData.sshSigningKeysCount}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                    Packages
+                  </span>
+                  <span
+                    style={{
+                      color: "#f39c12",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    📦 {userData.packagesCount}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                    Following/Followers
+                  </span>
+                  <span
+                    style={{
+                      color: "#e74c3c",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    📊 {userData.followerToFollowingRatio.toFixed(1)}
+                  </span>
+                </div>
                 {userData.createdAt && (
                   <div
                     style={{
@@ -1045,6 +781,120 @@ export async function GET(
                     No language data
                   </div>
                 )}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  color: "#f0f6fc",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  marginBottom: "15px",
+                }}
+              >
+                Advanced Statistics
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px",
+                  marginBottom: "20px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "10px" }}>
+                    Follower-to-Following Ratio
+                  </span>
+                  <span
+                    style={{
+                      color: "#58a6ff",
+                      fontSize: "10px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {userData.followerToFollowingRatio.toFixed(2)}
+                  </span>
+                </div>
+                {Object.keys(userData.packageEcosystems).length > 0 && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      background: "#161b22",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    <span style={{ color: "#7d8590", fontSize: "10px" }}>
+                      Package Ecosystems
+                    </span>
+                    <span
+                      style={{
+                        color: "#f39c12",
+                        fontSize: "10px",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {Object.keys(userData.packageEcosystems).length}
+                    </span>
+                  </div>
+                )}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "10px" }}>
+                    Most Active Day
+                  </span>
+                  <span
+                    style={{
+                      color: "#56d364",
+                      fontSize: "10px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {Object.entries(userData.dayOfWeekStats).length > 0
+                      ? Object.entries(userData.dayOfWeekStats).sort(([, a], [, b]) => b - a)[0]?.[0]?.substring(0, 3) ?? "N/A"
+                      : "N/A"}
+                  </span>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: "#161b22",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  <span style={{ color: "#7d8590", fontSize: "10px" }}>
+                    Peak Activity Month
+                  </span>
+                  <span
+                    style={{
+                      color: "#ffa657",
+                      fontSize: "10px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {Object.entries(userData.monthlyActivity).length > 0
+                      ? Object.entries(userData.monthlyActivity).sort(([, a], [, b]) => b - a)[0]?.[0] ?? "N/A"
+                      : "N/A"}
+                  </span>
+                </div>
               </div>
               <div
                 style={{
@@ -1224,6 +1074,102 @@ export async function GET(
                   marginBottom: "10px",
                 }}
               >
+                Active Days (Weekly)
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  marginBottom: "15px",
+                }}
+              >
+                {Object.entries(userData.dayOfWeekStats)
+                  .sort(([, a], [, b]) => b - a)
+                  .slice(0, 3)
+                  .map(([day, count], index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        background: "#161b22",
+                        padding: "4px 8px",
+                        borderRadius: "3px",
+                      }}
+                    >
+                      <span style={{ color: "#7d8590", fontSize: "9px" }}>
+                        {day.substring(0, 3)}
+                      </span>
+                      <span
+                        style={{
+                          color: "#56d364",
+                          fontSize: "9px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {count}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  color: "#f0f6fc",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                }}
+              >
+                Top Active Months
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  marginBottom: "15px",
+                }}
+              >
+                {Object.entries(userData.monthlyActivity)
+                  .sort(([, a], [, b]) => b - a)
+                  .slice(0, 3)
+                  .map(([month, count], index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        background: "#161b22",
+                        padding: "4px 8px",
+                        borderRadius: "3px",
+                      }}
+                    >
+                      <span style={{ color: "#7d8590", fontSize: "9px" }}>
+                        {month}
+                      </span>
+                      <span
+                        style={{
+                          color: "#ffa657",
+                          fontSize: "9px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {count}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  color: "#f0f6fc",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                }}
+              >
                 Latest Repositories
               </div>
               <div
@@ -1239,6 +1185,7 @@ export async function GET(
                     key={index}
                     style={{
                       display: "flex",
+                      flexDirection: "column",
                       background: "#161b22",
                       padding: "8px",
                       borderRadius: "4px",
@@ -1285,6 +1232,58 @@ export async function GET(
                   </div>
                 ))}
               </div>
+              {userData.packagesCount > 0 && (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      color: "#f0f6fc",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    Package Ecosystems
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "4px",
+                      marginBottom: "15px",
+                    }}
+                  >
+                    {Object.entries(userData.packageEcosystems)
+                      .sort(([, a], [, b]) => b - a)
+                      .slice(0, 3)
+                      .map(([ecosystem, count], index) => (
+                        <div
+                          key={index}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            background: "#161b22",
+                            padding: "4px 8px",
+                            borderRadius: "3px",
+                          }}
+                        >
+                          <span style={{ color: "#7d8590", fontSize: "9px" }}>
+                            📦 {ecosystem}
+                          </span>
+                          <span
+                            style={{
+                              color: "#f39c12",
+                              fontSize: "9px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {count}
+                          </span>
+                        </div>
+                      ))}
+                  </div>
+                </>
+              )}
               <div
                 style={{
                   display: "flex",
@@ -1311,6 +1310,7 @@ export async function GET(
                       key={index}
                       style={{
                         display: "flex",
+                        flexDirection: "column",
                         background: "#161b22",
                         padding: "6px",
                         borderRadius: "4px",
@@ -1358,6 +1358,35 @@ export async function GET(
                   );
                 })}
               </div>
+              {userData.receivedPublicEventsCount > 0 && (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      color: "#f0f6fc",
+                      fontSize: "12px",
+                      fontWeight: "bold",
+                      marginTop: "15px",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    Recent Public Events ({userData.receivedPublicEventsCount})
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      background: "#161b22",
+                      padding: "6px 8px",
+                      borderRadius: "4px",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <span style={{ color: "#7d8590", fontSize: "8px" }}>
+                      📡 Monitoring activity
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
