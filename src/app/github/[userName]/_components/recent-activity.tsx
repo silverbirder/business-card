@@ -1,22 +1,6 @@
-import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
-
-type RecentActivityData = {
-  recentCommits: number;
-  recentPRs: number;
-  recentIssues: number;
-  eventTypeStats: Record<string, number>;
-  dayOfWeekStats: Record<string, number>;
-  monthlyActivity: Record<string, number>;
-  repos: RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"];
-  packagesCount: number;
-  packageEcosystems: Record<string, number>;
-  starred: Array<
-    RestEndpointMethodTypes["activity"]["listReposStarredByUser"]["response"]["data"][number]
-  >;
-  receivedPublicEventsCount: number;
-};
+import type { RecentActivityData } from "@/types/github";
 
 type Props = {
   userData: RecentActivityData;
@@ -132,7 +116,6 @@ export const RecentActivity = ({ userData }: Props) => {
           </span>
         </Flex>
       </Flex>
-
       <Flex
         style={{
           color: GITHUB_COLORS.text.primary,

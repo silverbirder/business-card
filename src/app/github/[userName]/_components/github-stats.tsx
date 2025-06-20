@@ -1,23 +1,7 @@
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { StatsCard } from "./stats-card";
 import { Flex } from "./flex";
-
-type GitHubStatsData = {
-  publicRepos: number;
-  followers: number;
-  following: number;
-  totalStars: number;
-  totalForks: number;
-  totalGists: number;
-  starredCount: number;
-  subscriptionsCount: number;
-  publicKeysCount: number;
-  gpgKeysCount: number;
-  sshSigningKeysCount: number;
-  packagesCount: number;
-  followerToFollowingRatio: number;
-  createdAt?: string | null;
-};
+import type { GitHubStatsData } from "@/types/github";
 
 type Props = {
   userData: GitHubStatsData;

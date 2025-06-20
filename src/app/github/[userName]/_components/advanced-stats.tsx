@@ -1,18 +1,9 @@
-import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { StatsCard } from "./stats-card";
 import { LanguageChart } from "./language-chart";
 import { ActivityChart } from "./activity-chart";
 import { Flex } from "./flex";
-
-type AdvancedStatsData = {
-  topLanguages: [string, number][];
-  followerToFollowingRatio: number;
-  packageEcosystems: Record<string, number>;
-  dayOfWeekStats: Record<string, number>;
-  monthlyActivity: Record<string, number>;
-  repos: RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"];
-};
+import type { AdvancedStatsData } from "@/types/github";
 
 type Props = {
   userData: AdvancedStatsData;

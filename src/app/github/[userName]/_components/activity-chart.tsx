@@ -1,9 +1,9 @@
-import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { GITHUB_COLORS, SPACING, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
+import type { GitHubRepository } from "@/types/github";
 
 type Props = {
-  repos: RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"];
+  repos: GitHubRepository[];
   width?: number;
   height?: number;
 };

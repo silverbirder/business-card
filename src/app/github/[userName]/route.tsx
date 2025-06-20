@@ -13,6 +13,7 @@ import {
   RecentActivity,
   Flex,
 } from "./_components";
+import type { ComprehensiveUserData } from "@/types/github";
 
 export const runtime = "edge";
 
@@ -31,7 +32,7 @@ export async function GET(
     fetchUserFollowing(userName),
   ]);
 
-  const userData = {
+  const userData: ComprehensiveUserData = {
     name: gitHubUser.name ?? gitHubUser.login,
     username: gitHubUser.login,
     bio: gitHubUser.bio ?? "GitHub Developer",

@@ -1,5 +1,6 @@
 import { Octokit } from "octokit";
 import { env } from "@/env";
+import type { GitHubUser, GitHubRepository } from "@/types/github";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 
 function createOctokit() {
@@ -10,9 +11,7 @@ function createOctokit() {
 
 export async function fetchGitHubUser(
   userName: string,
-): Promise<
-  RestEndpointMethodTypes["users"]["getByUsername"]["response"]["data"] | null
-> {
+): Promise<GitHubUser | null> {
   try {
     const octokit = createOctokit();
     const { data: user } = await octokit.rest.users.getByUsername({
@@ -27,9 +26,7 @@ export async function fetchGitHubUser(
 
 export async function fetchUserRepos(
   userName: string,
-): Promise<
-  RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"]
-> {
+): Promise<GitHubRepository[]> {
   try {
     const octokit = createOctokit();
     const { data: repos } = await octokit.rest.repos.listForUser({

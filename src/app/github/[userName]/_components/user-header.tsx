@@ -1,22 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
-
-type UserData = {
-  name: string;
-  username: string;
-  bio: string;
-  location?: string | null;
-  company?: string | null;
-  twitterUsername?: string | null;
-  hireable?: boolean | null;
-  avatar: string;
-  socialAccounts?: Array<{ provider: string }>;
-  organizations: Array<{ avatar_url: string; login: string }>;
-};
+import type { UserHeaderData } from "@/types/github";
 
 type Props = {
-  userData: UserData;
+  userData: UserHeaderData;
 };
 
 export const UserHeader = ({ userData }: Props) => {
