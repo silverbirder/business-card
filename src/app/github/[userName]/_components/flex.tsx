@@ -1,11 +1,11 @@
 import type { ReactNode, CSSProperties } from "react";
 
-interface FlexProps {
+type Props = {
   children: ReactNode;
   style?: CSSProperties;
-}
+};
 
-export function Flex({ children, style = {} }: FlexProps) {
+export const Flex = ({ children, style = {} }: Props) => {
   return (
     <div
       style={{
@@ -16,4 +16,4 @@ export function Flex({ children, style = {} }: FlexProps) {
       {children}
     </div>
   );
-}
+};

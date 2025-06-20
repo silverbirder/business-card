@@ -1,14 +1,14 @@
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 
-interface StatsCardProps {
+type Props = {
   label: string;
   value: string | number;
   color: string;
   icon?: string;
-}
+};
 
-export function StatsCard({ label, value, color, icon }: StatsCardProps) {
+export const StatsCard = ({ label, value, color, icon }: Props) => {
   return (
     <Flex
       style={{
@@ -38,4 +38,4 @@ export function StatsCard({ label, value, color, icon }: StatsCardProps) {
       </Flex>
     </Flex>
   );
-}
+};

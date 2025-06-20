@@ -2,7 +2,7 @@
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 
-interface UserData {
+type UserData = {
   name: string;
   username: string;
   bio: string;
@@ -13,13 +13,13 @@ interface UserData {
   avatar: string;
   socialAccounts?: Array<{ provider: string }>;
   organizations: Array<{ avatar_url: string; login: string }>;
-}
+};
 
-interface UserHeaderProps {
+type Props = {
   userData: UserData;
-}
+};
 
-export function UserHeader({ userData }: UserHeaderProps) {
+export const UserHeader = ({ userData }: Props) => {
   return (
     <Flex
       style={{
@@ -182,4 +182,4 @@ export function UserHeader({ userData }: UserHeaderProps) {
       )}
     </Flex>
   );
-}
+};

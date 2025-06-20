@@ -2,13 +2,13 @@ import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-meth
 import { GITHUB_COLORS, SPACING, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 
-interface ActivityChartProps {
+type Props = {
   repos: RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"];
   width?: number;
   height?: number;
-}
+};
 
-export function ActivityChart({ repos, width = 180, height = 60 }: ActivityChartProps) {
+export const ActivityChart = ({ repos, width = 180, height = 60 }: Props) => {
   if (repos.length === 0) {
     return null;
   }
@@ -71,4 +71,4 @@ export function ActivityChart({ repos, width = 180, height = 60 }: ActivityChart
       </svg>
     </Flex>
   );
-}
+};

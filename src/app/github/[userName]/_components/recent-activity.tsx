@@ -2,7 +2,7 @@ import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-meth
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 
-interface RecentActivityData {
+type RecentActivityData = {
   recentCommits: number;
   recentPRs: number;
   recentIssues: number;
@@ -16,13 +16,13 @@ interface RecentActivityData {
     RestEndpointMethodTypes["activity"]["listReposStarredByUser"]["response"]["data"][number]
   >;
   receivedPublicEventsCount: number;
-}
+};
 
-interface RecentActivityProps {
+type Props = {
   userData: RecentActivityData;
-}
+};
 
-export function RecentActivity({ userData }: RecentActivityProps) {
+export const RecentActivity = ({ userData }: Props) => {
   return (
     <Flex
       style={{
@@ -538,4 +538,4 @@ export function RecentActivity({ userData }: RecentActivityProps) {
       )}
     </Flex>
   );
-}
+};

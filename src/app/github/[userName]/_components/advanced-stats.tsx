@@ -5,20 +5,20 @@ import { LanguageChart } from "./language-chart";
 import { ActivityChart } from "./activity-chart";
 import { Flex } from "./flex";
 
-interface AdvancedStatsData {
+type AdvancedStatsData = {
   topLanguages: [string, number][];
   followerToFollowingRatio: number;
   packageEcosystems: Record<string, number>;
   dayOfWeekStats: Record<string, number>;
   monthlyActivity: Record<string, number>;
   repos: RestEndpointMethodTypes["repos"]["listForUser"]["response"]["data"];
-}
+};
 
-interface AdvancedStatsProps {
+type Props = {
   userData: AdvancedStatsData;
-}
+};
 
-export function AdvancedStats({ userData }: AdvancedStatsProps) {
+export const AdvancedStats = ({ userData }: Props) => {
   return (
     <Flex
       style={{
@@ -131,4 +131,4 @@ export function AdvancedStats({ userData }: AdvancedStatsProps) {
       )}
     </Flex>
   );
-}
+};

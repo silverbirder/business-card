@@ -2,7 +2,7 @@ import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { StatsCard } from "./stats-card";
 import { Flex } from "./flex";
 
-interface GitHubStatsData {
+type GitHubStatsData = {
   publicRepos: number;
   followers: number;
   following: number;
@@ -17,13 +17,13 @@ interface GitHubStatsData {
   packagesCount: number;
   followerToFollowingRatio: number;
   createdAt?: string | null;
-}
+};
 
-interface GitHubStatsProps {
+type Props = {
   userData: GitHubStatsData;
-}
+};
 
-export function GitHubStats({ userData }: GitHubStatsProps) {
+export const GitHubStats = ({ userData }: Props) => {
   return (
     <Flex
       style={{
@@ -135,4 +135,4 @@ export function GitHubStats({ userData }: GitHubStatsProps) {
       </Flex>
     </Flex>
   );
-}
+};

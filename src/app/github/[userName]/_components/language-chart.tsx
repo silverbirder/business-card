@@ -1,12 +1,12 @@
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "./flex";
 
-interface LanguageChartProps {
+type Props = {
   languages: [string, number][];
   width?: number;
-}
+};
 
-export function LanguageChart({ languages, width = 180 }: LanguageChartProps) {
+export const LanguageChart = ({ languages, width = 180 }: Props) => {
   if (languages.length === 0) {
     return null;
   }
@@ -100,4 +100,4 @@ export function LanguageChart({ languages, width = 180 }: LanguageChartProps) {
       </Flex>
     </Flex>
   );
-}
+};
