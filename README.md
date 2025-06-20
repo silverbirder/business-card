@@ -1,29 +1,72 @@
-# Create T3 App
+# GitHub Business Card
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+動的なGitHub名刺を生成するNext.jsアプリケーションです。GitHubのユーザー情報、リポジトリ統計、アクティビティ履歴などを美しい名刺形式で表示します。
 
-## What's next? How do I make an app with this?
+## 🌟 特徴
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- **動的名刺生成**: GitHubユーザー名を指定するだけで美しい名刺を自動生成
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## 🚀 使用方法
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+アプリケーションをデプロイ後、以下のURLでGitHub名刺にアクセスできます：
 
-## Learn More
+```
+https://digital-meishi.vercel.app/github/[GitHubユーザー名]
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+例：`https://digital-meishi.vercel.app/github/octocat`
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## 🛠️ 技術スタック
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+このプロジェクトは[T3 Stack](https://create.t3.gg/)をベースに構築されています：
 
-## How do I deploy this?
+- **[Next.js](https://nextjs.org)** - Reactフレームワーク
+- **[TypeScript](https://www.typescriptlang.org/)** - 型安全性
+- **[Tailwind CSS](https://tailwindcss.com)** - スタイリング
+- **[tRPC](https://trpc.io)** - API型安全性
+- **[Octokit](https://github.com/octokit/octokit.js)** - GitHub API クライアント
+- **[Next/OG](https://nextjs.org/docs/app/api-reference/functions/image-response)** - 動的画像生成
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## 📋 前提条件
+
+- Node.js 18.x以上
+- GitHub Personal Access Token（APIアクセス用）
+
+## ⚙️ セットアップ
+
+1. リポジトリをクローン：
+
+```bash
+git clone https://github.com/silverbirder/business-card.git
+cd business-card
+```
+
+2. 依存関係をインストール：
+
+```bash
+npm install
+```
+
+3. 環境変数を設定：
+
+```bash
+cp .env.example .env
+```
+
+`.env`に以下を追加：
+
+```env
+GITHUB_TOKEN=your_github_personal_access_token
+```
+
+4. 開発サーバーを起動：
+
+```bash
+npm run dev
+```
+
+## 🔗 関連リンク
+
+- [T3 Stack ドキュメント](https://create.t3.gg/)
+- [Next.js ドキュメント](https://nextjs.org/docs)
+- [GitHub API ドキュメント](https://docs.github.com/en/rest)
