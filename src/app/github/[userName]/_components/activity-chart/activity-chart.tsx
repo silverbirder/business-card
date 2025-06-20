@@ -1,7 +1,7 @@
 import { GITHUB_COLORS, SPACING, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "../flex";
 import type { GitHubRepository } from "@/types/github";
-import { useActivityChart } from "./use-activity-chart";
+import { useActivityChart } from "./activity-chart.hook";
 
 type Props = {
   repos: GitHubRepository[];
@@ -10,11 +10,10 @@ type Props = {
 };
 
 export const ActivityChart = ({ repos, width = 180, height = 60 }: Props) => {
+  const { bars } = useActivityChart({ repos, width, height });
   if (repos.length === 0) {
     return null;
   }
-
-  const { bars } = useActivityChart({ repos, width, height });
 
   return (
     <Flex style={{ flexDirection: "column" }}>

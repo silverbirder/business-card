@@ -1,3 +1,3 @@
 export { ActivityChart } from "./activity-chart";
-export { useActivityChart } from "./use-activity-chart";
-export type { ActivityChartData, UseActivityChartProps } from "./use-activity-chart";
+export { useActivityChart } from "./activity-chart.hook";
+export type { ActivityChartData, UseActivityChartProps } from "./activity-chart.hook";

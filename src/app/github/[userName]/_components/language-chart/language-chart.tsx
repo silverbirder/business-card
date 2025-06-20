@@ -1,6 +1,6 @@
 import { GITHUB_COLORS, SPACING, RADIUS, TYPOGRAPHY } from "@/lib/design-token";
 import { Flex } from "../flex";
-import { useLanguageChart } from "./use-language-chart";
+import { useLanguageChart } from "./language-chart.hook";
 
 type Props = {
   languages: [string, number][];
@@ -8,14 +8,13 @@ type Props = {
 };
 
 export const LanguageChart = ({ languages, width = 180 }: Props) => {
-  if (languages.length === 0) {
-    return null;
-  }
-
   const { segments, languages: languageData } = useLanguageChart({
     languages,
     width,
   });
+  if (languages.length === 0) {
+    return null;
+  }
 
   const barHeight = 8;
 
