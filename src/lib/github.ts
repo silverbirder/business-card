@@ -1,7 +1,6 @@
 import { Octokit } from "octokit";
 import { env } from "@/env";
 import type { GitHubUser, GitHubRepository } from "@/types/github";
-import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 
 function createOctokit() {
   return new Octokit({

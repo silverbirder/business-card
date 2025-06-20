@@ -6,6 +6,14 @@ export type GitHubRepository = RestEndpointMethodTypes["repos"]["listForUser"]["
 export type GitHubGist = RestEndpointMethodTypes["gists"]["listForUser"]["response"]["data"][number];
 export type GitHubOrganization = RestEndpointMethodTypes["orgs"]["listForUser"]["response"]["data"][number];
 export type GitHubStarred = RestEndpointMethodTypes["activity"]["listReposStarredByUser"]["response"]["data"][number];
+export type GitHubSubscription = RestEndpointMethodTypes["activity"]["listReposWatchedByUser"]["response"]["data"][number];
+export type GitHubEvent = RestEndpointMethodTypes["activity"]["listReceivedEventsForUser"]["response"]["data"][number];
+export type GitHubPublicKey = RestEndpointMethodTypes["users"]["listPublicKeysForUser"]["response"]["data"][number];
+export type GitHubGpgKey = RestEndpointMethodTypes["users"]["listGpgKeysForUser"]["response"]["data"][number];
+export type GitHubFollower = RestEndpointMethodTypes["users"]["listFollowersForUser"]["response"]["data"][number];
+export type GitHubSshSigningKey = RestEndpointMethodTypes["users"]["listSshSigningKeysForUser"]["response"]["data"][number];
+export type GitHubPackage = RestEndpointMethodTypes["packages"]["listPackagesForUser"]["response"]["data"][number];
+export type GitHubSocialAccount = RestEndpointMethodTypes["users"]["listSocialAccountsForUser"]["response"]["data"][number];
 
 // 基本的なユーザー情報の型
 export interface BaseUserData {
@@ -83,7 +91,7 @@ export interface UserHeaderData {
   twitterUsername?: string | null;
   hireable?: boolean | null;
   avatar: string;
-  socialAccounts?: Array<{ provider: string }>;
+  socialAccounts?: GitHubSocialAccount[];
   organizations: Array<{ avatar_url: string; login: string }>;
 }
 
@@ -103,23 +111,23 @@ export interface ComprehensiveUserData extends BaseUserData {
   starred: GitHubStarred[];
   starredCount: number;
   starredLanguageStats: Record<string, number>;
-  subscriptions: any[];
+  subscriptions: GitHubSubscription[];
   subscriptionsCount: number;
-  receivedEvents: any[];
-  publicKeys: any[];
+  receivedEvents: GitHubEvent[];
+  publicKeys: GitHubPublicKey[];
   publicKeysCount: number;
-  gpgKeys: any[];
+  gpgKeys: GitHubGpgKey[];
   gpgKeysCount: number;
-  socialAccounts?: Array<{ provider: string }>;
+  socialAccounts?: GitHubSocialAccount[];
   yearlyCommits: Record<string, number>;
   eventTypeStats: Record<string, number>;
-  followersData: any[];
+  followersData: GitHubFollower[];
   followersCount: number;
-  receivedPublicEvents: any[];
+  receivedPublicEvents: GitHubEvent[];
   receivedPublicEventsCount: number;
-  sshSigningKeys: any[];
+  sshSigningKeys: GitHubSshSigningKey[];
   sshSigningKeysCount: number;
-  packages: any[];
+  packages: GitHubPackage[];
   packagesCount: number;
   followingCount: number;
   followerToFollowingRatio: number;
