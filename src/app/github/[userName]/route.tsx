@@ -2,7 +2,12 @@
 import { ImageResponse } from "@vercel/og";
 import { type NextRequest } from "next/server";
 import type { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
-import { fetchGitHubUser, fetchUserStats, fetchUserFollowing } from "@/lib/github";
+import {
+  fetchGitHubUser,
+  fetchUserStats,
+  fetchUserFollowing,
+} from "@/lib/github";
+import { GITHUB_COLORS, SPACING, RADIUS } from "@/lib/design-token";
 
 export const runtime = "edge";
 
@@ -12,7 +17,7 @@ function generateLanguageChart(languages: [string, number][], width = 180) {
   }
 
   const total = languages.reduce((sum, [, count]) => sum + count, 0);
-  const colors = ["#58a6ff", "#f85149", "#56d364", "#d2a8ff", "#ffa657"];
+  const colors = GITHUB_COLORS.languageChart;
 
   let currentX = 0;
   const barWidth = width;
@@ -42,10 +47,20 @@ function generateLanguageChart(languages: [string, number][], width = 180) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <svg width={width} height={barHeight} style={{ marginBottom: "12px" }}>
+      <svg
+        width={width}
+        height={barHeight}
+        style={{ marginBottom: SPACING["2xl"] }}
+      >
         {bars}
       </svg>
-      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: SPACING.md,
+        }}
+      >
         {languages.slice(0, 3).map(([language, count], index) => {
           const percentage = Math.round((count / total) * 100);
           return (
@@ -56,7 +71,7 @@ function generateLanguageChart(languages: [string, number][], width = 180) {
                 alignItems: "center",
                 justifyContent: "space-between",
                 fontSize: "10px",
-                color: "#7d8590",
+                color: GITHUB_COLORS.text.muted,
               }}
             >
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -65,13 +80,15 @@ function generateLanguageChart(languages: [string, number][], width = 180) {
                     width: "8px",
                     height: "8px",
                     backgroundColor: colors[index % colors.length],
-                    borderRadius: "50%",
-                    marginRight: "6px",
+                    borderRadius: RADIUS.full,
+                    marginRight: SPACING.md,
                   }}
                 />
                 <span>{language}</span>
               </div>
-              <span style={{ color: "#e6edf3", fontSize: "9px" }}>
+              <span
+                style={{ color: GITHUB_COLORS.text.secondary, fontSize: "9px" }}
+              >
                 {percentage}%
               </span>
             </div>
@@ -112,9 +129,9 @@ function generateActivityChart(
       <div
         style={{
           display: "flex",
-          color: "#7d8590",
+          color: GITHUB_COLORS.text.muted,
           fontSize: "10px",
-          marginBottom: "8px",
+          marginBottom: SPACING.lg,
         }}
       >
         Activity (12 months)
@@ -126,11 +143,11 @@ function generateActivityChart(
           const y = height - barHeight - 10;
 
           const getColor = (level: number) => {
-            if (level === 0) return "#161b22";
-            if (level <= 3) return "#0e4429";
-            if (level <= 6) return "#006d32";
-            if (level <= 8) return "#26a641";
-            return "#39d353";
+            if (level === 0) return GITHUB_COLORS.activity.none;
+            if (level <= 3) return GITHUB_COLORS.activity.low;
+            if (level <= 6) return GITHUB_COLORS.activity.medium;
+            if (level <= 8) return GITHUB_COLORS.activity.high;
+            return GITHUB_COLORS.activity.highest;
           };
 
           return (
@@ -233,7 +250,7 @@ export async function GET(
             height: "100%",
             width: "100%",
             display: "flex",
-            background: "#0d1117",
+            background: GITHUB_COLORS.background.primary,
             fontFamily: "Inter",
             flexDirection: "column",
           }}
@@ -241,11 +258,11 @@ export async function GET(
           <div
             style={{
               display: "flex",
-              background: "#21262d",
-              margin: "15px",
-              marginBottom: "8px",
-              borderRadius: "12px",
-              padding: "20px",
+              background: GITHUB_COLORS.background.secondary,
+              margin: SPACING["3xl"],
+              marginBottom: SPACING.lg,
+              borderRadius: RADIUS.xl,
+              padding: SPACING["4xl"],
               alignItems: "center",
             }}
           >
@@ -254,8 +271,8 @@ export async function GET(
               style={{
                 width: "80px",
                 height: "80px",
-                borderRadius: "50%",
-                marginRight: "20px",
+                borderRadius: RADIUS.full,
+                marginRight: SPACING["4xl"],
               }}
               alt="User Avatar"
             />
@@ -263,7 +280,7 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "28px",
                   fontWeight: "bold",
                 }}
@@ -273,9 +290,9 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#7d8590",
+                  color: GITHUB_COLORS.text.muted,
                   fontSize: "16px",
-                  marginBottom: "8px",
+                  marginBottom: SPACING.lg,
                 }}
               >
                 @{userData.username}
@@ -283,19 +300,19 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#e6edf3",
+                  color: GITHUB_COLORS.text.secondary,
                   fontSize: "14px",
-                  marginBottom: "8px",
+                  marginBottom: SPACING.lg,
                 }}
               >
                 {userData.bio}
               </div>
-              <div style={{ display: "flex", gap: "20px" }}>
+              <div style={{ display: "flex", gap: SPACING["4xl"] }}>
                 {userData.location && (
                   <div
                     style={{
                       display: "flex",
-                      color: "#7d8590",
+                      color: GITHUB_COLORS.text.muted,
                       fontSize: "12px",
                       alignItems: "center",
                     }}
@@ -307,7 +324,7 @@ export async function GET(
                   <div
                     style={{
                       display: "flex",
-                      color: "#7d8590",
+                      color: GITHUB_COLORS.text.muted,
                       fontSize: "12px",
                       alignItems: "center",
                     }}
@@ -319,7 +336,7 @@ export async function GET(
                   <div
                     style={{
                       display: "flex",
-                      color: "#7d8590",
+                      color: GITHUB_COLORS.text.muted,
                       fontSize: "12px",
                       alignItems: "center",
                     }}
@@ -331,7 +348,7 @@ export async function GET(
                   <div
                     style={{
                       display: "flex",
-                      color: "#56d364",
+                      color: GITHUB_COLORS.accent.green,
                       fontSize: "12px",
                       alignItems: "center",
                     }}
@@ -343,7 +360,11 @@ export async function GET(
               {userData.socialAccounts &&
                 userData.socialAccounts.length > 0 && (
                   <div
-                    style={{ display: "flex", marginTop: "8px", gap: "10px" }}
+                    style={{
+                      display: "flex",
+                      marginTop: SPACING.lg,
+                      gap: SPACING.xl,
+                    }}
                   >
                     {userData.socialAccounts
                       .slice(0, 3)
@@ -352,7 +373,7 @@ export async function GET(
                           key={index}
                           style={{
                             display: "flex",
-                            color: "#58a6ff",
+                            color: GITHUB_COLORS.accent.blue,
                             fontSize: "10px",
                             alignItems: "center",
                           }}
@@ -374,14 +395,14 @@ export async function GET(
                 <div
                   style={{
                     display: "flex",
-                    color: "#f0f6fc",
+                    color: GITHUB_COLORS.text.primary,
                     fontSize: "12px",
-                    marginBottom: "8px",
+                    marginBottom: SPACING.lg,
                   }}
                 >
                   Organizations
                 </div>
-                <div style={{ display: "flex", gap: "4px" }}>
+                <div style={{ display: "flex", gap: SPACING.sm }}>
                   {userData.organizations.slice(0, 3).map((org, index) => (
                     <img
                       key={index}
@@ -389,7 +410,7 @@ export async function GET(
                       style={{
                         width: "24px",
                         height: "24px",
-                        borderRadius: "4px",
+                        borderRadius: RADIUS.sm,
                       }}
                       alt={org.login}
                     />
@@ -401,8 +422,8 @@ export async function GET(
           <div
             style={{
               display: "flex",
-              margin: "0 15px 15px 15px",
-              gap: "15px",
+              margin: `0 ${SPACING["3xl"]} ${SPACING["3xl"]} ${SPACING["3xl"]}`,
+              gap: SPACING["3xl"],
               flex: 1,
             }}
           >
@@ -410,19 +431,19 @@ export async function GET(
               style={{
                 display: "flex",
                 flexDirection: "column",
-                background: "#21262d",
-                borderRadius: "12px",
-                padding: "20px",
-                minWidth: "200px",
+                background: GITHUB_COLORS.background.secondary,
+                borderRadius: RADIUS.xl,
+                padding: SPACING["4xl"],
+                flex: 1,
               }}
             >
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "16px",
                   fontWeight: "bold",
-                  marginBottom: "15px",
+                  marginBottom: SPACING["3xl"],
                 }}
               >
                 GitHub Stats
@@ -431,24 +452,29 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "8px",
+                  gap: SPACING.lg,
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Repositories
                   </span>
                   <span
                     style={{
-                      color: "#58a6ff",
+                      color: GITHUB_COLORS.accent.blue,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -460,17 +486,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Followers
                   </span>
                   <span
                     style={{
-                      color: "#f85149",
+                      color: GITHUB_COLORS.accent.red,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -482,17 +513,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Following
                   </span>
                   <span
                     style={{
-                      color: "#56d364",
+                      color: GITHUB_COLORS.accent.green,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -504,17 +540,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Total Stars
                   </span>
                   <span
                     style={{
-                      color: "#ffa657",
+                      color: GITHUB_COLORS.accent.orange,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -526,17 +567,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Total Forks
                   </span>
                   <span
                     style={{
-                      color: "#d2a8ff",
+                      color: GITHUB_COLORS.accent.purple,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -548,17 +594,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Gists
                   </span>
                   <span
                     style={{
-                      color: "#58a6ff",
+                      color: GITHUB_COLORS.accent.blue,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -570,17 +621,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Starred
                   </span>
                   <span
                     style={{
-                      color: "#f1c40f",
+                      color: GITHUB_COLORS.accent.yellow,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -592,17 +648,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Watching
                   </span>
                   <span
                     style={{
-                      color: "#3498db",
+                      color: GITHUB_COLORS.accent.lightBlue,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -614,17 +675,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     SSH Keys
                   </span>
                   <span
                     style={{
-                      color: "#9b59b6",
+                      color: GITHUB_COLORS.accent.darkPurple,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -636,17 +702,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     GPG Keys
                   </span>
                   <span
                     style={{
-                      color: "#e67e22",
+                      color: GITHUB_COLORS.accent.darkOrange,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -658,17 +729,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     SSH Signing Keys
                   </span>
                   <span
                     style={{
-                      color: "#9b59b6",
+                      color: GITHUB_COLORS.accent.darkPurple,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -680,17 +756,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Packages
                   </span>
                   <span
                     style={{
-                      color: "#f39c12",
+                      color: GITHUB_COLORS.accent.darkYellow,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -702,17 +783,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "12px",
+                    }}
+                  >
                     Following/Followers
                   </span>
                   <span
                     style={{
-                      color: "#e74c3c",
+                      color: GITHUB_COLORS.accent.darkRed,
                       fontSize: "12px",
                       fontWeight: "bold",
                     }}
@@ -725,17 +811,22 @@ export async function GET(
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      background: "#161b22",
-                      padding: "8px 12px",
-                      borderRadius: "6px",
+                      background: GITHUB_COLORS.background.tertiary,
+                      padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                      borderRadius: RADIUS.md,
                     }}
                   >
-                    <span style={{ color: "#7d8590", fontSize: "12px" }}>
+                    <span
+                      style={{
+                        color: GITHUB_COLORS.text.muted,
+                        fontSize: "12px",
+                      }}
+                    >
                       Member Since
                     </span>
                     <span
                       style={{
-                        color: "#2ecc71",
+                        color: GITHUB_COLORS.accent.darkGreen,
                         fontSize: "12px",
                         fontWeight: "bold",
                       }}
@@ -750,31 +841,31 @@ export async function GET(
               style={{
                 display: "flex",
                 flexDirection: "column",
-                background: "#21262d",
-                borderRadius: "12px",
-                padding: "20px",
+                background: GITHUB_COLORS.background.secondary,
+                borderRadius: RADIUS.xl,
+                padding: SPACING["4xl"],
                 flex: 1,
               }}
             >
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "16px",
                   fontWeight: "bold",
-                  marginBottom: "15px",
+                  marginBottom: SPACING["3xl"],
                 }}
               >
                 Top Languages
               </div>
-              <div style={{ display: "flex", marginBottom: "20px" }}>
+              <div style={{ display: "flex", marginBottom: SPACING["4xl"] }}>
                 {userData.topLanguages.length > 0 ? (
                   generateLanguageChart(userData.topLanguages, 250)
                 ) : (
                   <div
                     style={{
                       display: "flex",
-                      color: "#7d8590",
+                      color: GITHUB_COLORS.text.muted,
                       fontSize: "12px",
                     }}
                   >
@@ -785,10 +876,10 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "16px",
                   fontWeight: "bold",
-                  marginBottom: "15px",
+                  marginBottom: SPACING["3xl"],
                 }}
               >
                 Advanced Statistics
@@ -797,25 +888,30 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "8px",
-                  marginBottom: "20px",
+                  gap: SPACING.lg,
+                  marginBottom: SPACING["4xl"],
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "10px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "10px",
+                    }}
+                  >
                     Follower-to-Following Ratio
                   </span>
                   <span
                     style={{
-                      color: "#58a6ff",
+                      color: GITHUB_COLORS.accent.blue,
                       fontSize: "10px",
                       fontWeight: "bold",
                     }}
@@ -828,17 +924,22 @@ export async function GET(
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      background: "#161b22",
-                      padding: "8px 12px",
-                      borderRadius: "6px",
+                      background: GITHUB_COLORS.background.tertiary,
+                      padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                      borderRadius: RADIUS.md,
                     }}
                   >
-                    <span style={{ color: "#7d8590", fontSize: "10px" }}>
+                    <span
+                      style={{
+                        color: GITHUB_COLORS.text.muted,
+                        fontSize: "10px",
+                      }}
+                    >
                       Package Ecosystems
                     </span>
                     <span
                       style={{
-                        color: "#f39c12",
+                        color: GITHUB_COLORS.accent.darkYellow,
                         fontSize: "10px",
                         fontWeight: "bold",
                       }}
@@ -851,23 +952,30 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "10px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "10px",
+                    }}
+                  >
                     Most Active Day
                   </span>
                   <span
                     style={{
-                      color: "#56d364",
+                      color: GITHUB_COLORS.accent.green,
                       fontSize: "10px",
                       fontWeight: "bold",
                     }}
                   >
                     {Object.entries(userData.dayOfWeekStats).length > 0
-                      ? Object.entries(userData.dayOfWeekStats).sort(([, a], [, b]) => b - a)[0]?.[0]?.substring(0, 3) ?? "N/A"
+                      ? (Object.entries(userData.dayOfWeekStats)
+                          .sort(([, a], [, b]) => b - a)[0]?.[0]
+                          ?.substring(0, 3) ?? "N/A")
                       : "N/A"}
                   </span>
                 </div>
@@ -875,23 +983,30 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "8px 12px",
-                    borderRadius: "6px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.lg}px ${SPACING["2xl"]}`,
+                    borderRadius: RADIUS.md,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "10px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "10px",
+                    }}
+                  >
                     Peak Activity Month
                   </span>
                   <span
                     style={{
-                      color: "#ffa657",
+                      color: GITHUB_COLORS.accent.orange,
                       fontSize: "10px",
                       fontWeight: "bold",
                     }}
                   >
                     {Object.entries(userData.monthlyActivity).length > 0
-                      ? Object.entries(userData.monthlyActivity).sort(([, a], [, b]) => b - a)[0]?.[0] ?? "N/A"
+                      ? (Object.entries(userData.monthlyActivity).sort(
+                          ([, a], [, b]) => b - a,
+                        )[0]?.[0] ?? "N/A")
                       : "N/A"}
                   </span>
                 </div>
@@ -899,7 +1014,7 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "16px",
                   fontWeight: "bold",
                   marginBottom: "15px",
@@ -913,7 +1028,7 @@ export async function GET(
                 <div
                   style={{
                     display: "flex",
-                    color: "#7d8590",
+                    color: GITHUB_COLORS.text.muted,
                     fontSize: "12px",
                   }}
                 >
@@ -925,19 +1040,19 @@ export async function GET(
               style={{
                 display: "flex",
                 flexDirection: "column",
-                background: "#21262d",
-                borderRadius: "12px",
-                padding: "20px",
+                background: GITHUB_COLORS.background.secondary,
+                borderRadius: RADIUS.xl,
+                padding: SPACING["4xl"],
                 minWidth: "220px",
               }}
             >
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "16px",
                   fontWeight: "bold",
-                  marginBottom: "15px",
+                  marginBottom: SPACING["3xl"],
                 }}
               >
                 Recent Activity (30d)
@@ -946,25 +1061,30 @@ export async function GET(
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "8px",
-                  marginBottom: "20px",
+                  gap: SPACING.lg,
+                  marginBottom: SPACING["4xl"],
                 }}
               >
                 <div
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "6px 10px",
-                    borderRadius: "4px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.md}px ${SPACING.xl}px`,
+                    borderRadius: RADIUS.sm,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "11px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "11px",
+                    }}
+                  >
                     💻 Commits
                   </span>
                   <span
                     style={{
-                      color: "#56d364",
+                      color: GITHUB_COLORS.accent.green,
                       fontSize: "11px",
                       fontWeight: "bold",
                     }}
@@ -976,17 +1096,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "6px 10px",
-                    borderRadius: "4px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.md}px ${SPACING.xl}px`,
+                    borderRadius: RADIUS.sm,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "11px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "11px",
+                    }}
+                  >
                     🔄 Pull Requests
                   </span>
                   <span
                     style={{
-                      color: "#58a6ff",
+                      color: GITHUB_COLORS.accent.blue,
                       fontSize: "11px",
                       fontWeight: "bold",
                     }}
@@ -998,17 +1123,22 @@ export async function GET(
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    background: "#161b22",
-                    padding: "6px 10px",
-                    borderRadius: "4px",
+                    background: GITHUB_COLORS.background.tertiary,
+                    padding: `${SPACING.md}px ${SPACING.xl}px`,
+                    borderRadius: RADIUS.sm,
                   }}
                 >
-                  <span style={{ color: "#7d8590", fontSize: "11px" }}>
+                  <span
+                    style={{
+                      color: GITHUB_COLORS.text.muted,
+                      fontSize: "11px",
+                    }}
+                  >
                     🐛 Issues
                   </span>
                   <span
                     style={{
-                      color: "#f85149",
+                      color: GITHUB_COLORS.accent.red,
                       fontSize: "11px",
                       fontWeight: "bold",
                     }}
@@ -1020,7 +1150,7 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "14px",
                   fontWeight: "bold",
                   marginBottom: "10px",
@@ -1045,17 +1175,22 @@ export async function GET(
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        background: "#161b22",
-                        padding: "4px 8px",
-                        borderRadius: "3px",
+                        background: GITHUB_COLORS.background.tertiary,
+                        padding: `${SPACING.sm}px ${SPACING.lg}px`,
+                        borderRadius: RADIUS.xs,
                       }}
                     >
-                      <span style={{ color: "#7d8590", fontSize: "9px" }}>
+                      <span
+                        style={{
+                          color: GITHUB_COLORS.text.muted,
+                          fontSize: "9px",
+                        }}
+                      >
                         {eventType.replace("Event", "")}
                       </span>
                       <span
                         style={{
-                          color: "#58a6ff",
+                          color: GITHUB_COLORS.accent.blue,
                           fontSize: "9px",
                           fontWeight: "bold",
                         }}
@@ -1068,7 +1203,7 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "14px",
                   fontWeight: "bold",
                   marginBottom: "10px",
@@ -1093,17 +1228,22 @@ export async function GET(
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        background: "#161b22",
-                        padding: "4px 8px",
-                        borderRadius: "3px",
+                        background: GITHUB_COLORS.background.tertiary,
+                        padding: `${SPACING.sm}px ${SPACING.lg}px`,
+                        borderRadius: RADIUS.xs,
                       }}
                     >
-                      <span style={{ color: "#7d8590", fontSize: "9px" }}>
+                      <span
+                        style={{
+                          color: GITHUB_COLORS.text.muted,
+                          fontSize: "9px",
+                        }}
+                      >
                         {day.substring(0, 3)}
                       </span>
                       <span
                         style={{
-                          color: "#56d364",
+                          color: GITHUB_COLORS.accent.green,
                           fontSize: "9px",
                           fontWeight: "bold",
                         }}
@@ -1116,7 +1256,7 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "14px",
                   fontWeight: "bold",
                   marginBottom: "10px",
@@ -1141,17 +1281,22 @@ export async function GET(
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
-                        background: "#161b22",
-                        padding: "4px 8px",
-                        borderRadius: "3px",
+                        background: GITHUB_COLORS.background.tertiary,
+                        padding: `${SPACING.sm}px ${SPACING.lg}px`,
+                        borderRadius: RADIUS.xs,
                       }}
                     >
-                      <span style={{ color: "#7d8590", fontSize: "9px" }}>
+                      <span
+                        style={{
+                          color: GITHUB_COLORS.text.muted,
+                          fontSize: "9px",
+                        }}
+                      >
                         {month}
                       </span>
                       <span
                         style={{
-                          color: "#ffa657",
+                          color: GITHUB_COLORS.accent.orange,
                           fontSize: "9px",
                           fontWeight: "bold",
                         }}
@@ -1164,7 +1309,7 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "14px",
                   fontWeight: "bold",
                   marginBottom: "10px",
@@ -1186,15 +1331,15 @@ export async function GET(
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      background: "#161b22",
-                      padding: "8px",
-                      borderRadius: "4px",
+                      background: GITHUB_COLORS.background.tertiary,
+                      padding: SPACING.lg,
+                      borderRadius: RADIUS.sm,
                     }}
                   >
                     <div
                       style={{
                         display: "flex",
-                        color: "#58a6ff",
+                        color: GITHUB_COLORS.accent.blue,
                         fontSize: "10px",
                         fontWeight: "bold",
                         marginBottom: "2px",
@@ -1207,7 +1352,7 @@ export async function GET(
                     <div
                       style={{
                         display: "flex",
-                        color: "#7d8590",
+                        color: GITHUB_COLORS.text.muted,
                         fontSize: "8px",
                         marginBottom: "4px",
                       }}
@@ -1222,10 +1367,20 @@ export async function GET(
                         justifyContent: "space-between",
                       }}
                     >
-                      <span style={{ color: "#7d8590", fontSize: "8px" }}>
+                      <span
+                        style={{
+                          color: GITHUB_COLORS.text.muted,
+                          fontSize: "8px",
+                        }}
+                      >
                         {repo.language ?? "N/A"}
                       </span>
-                      <span style={{ color: "#ffa657", fontSize: "8px" }}>
+                      <span
+                        style={{
+                          color: GITHUB_COLORS.accent.orange,
+                          fontSize: "8px",
+                        }}
+                      >
                         ⭐ {repo.stargazers_count ?? 0}
                       </span>
                     </div>
@@ -1237,7 +1392,7 @@ export async function GET(
                   <div
                     style={{
                       display: "flex",
-                      color: "#f0f6fc",
+                      color: GITHUB_COLORS.text.primary,
                       fontSize: "14px",
                       fontWeight: "bold",
                       marginBottom: "10px",
@@ -1262,17 +1417,22 @@ export async function GET(
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
-                            background: "#161b22",
-                            padding: "4px 8px",
-                            borderRadius: "3px",
+                            background: GITHUB_COLORS.background.tertiary,
+                            padding: `${SPACING.sm}px ${SPACING.lg}px`,
+                            borderRadius: RADIUS.xs,
                           }}
                         >
-                          <span style={{ color: "#7d8590", fontSize: "9px" }}>
+                          <span
+                            style={{
+                              color: GITHUB_COLORS.text.muted,
+                              fontSize: "9px",
+                            }}
+                          >
                             📦 {ecosystem}
                           </span>
                           <span
                             style={{
-                              color: "#f39c12",
+                              color: GITHUB_COLORS.accent.darkYellow,
                               fontSize: "9px",
                               fontWeight: "bold",
                             }}
@@ -1287,7 +1447,7 @@ export async function GET(
               <div
                 style={{
                   display: "flex",
-                  color: "#f0f6fc",
+                  color: GITHUB_COLORS.text.primary,
                   fontSize: "14px",
                   fontWeight: "bold",
                   marginBottom: "10px",
@@ -1311,15 +1471,15 @@ export async function GET(
                       style={{
                         display: "flex",
                         flexDirection: "column",
-                        background: "#161b22",
-                        padding: "6px",
-                        borderRadius: "4px",
+                        background: GITHUB_COLORS.background.tertiary,
+                        padding: SPACING.md,
+                        borderRadius: RADIUS.sm,
                       }}
                     >
                       <div
                         style={{
                           display: "flex",
-                          color: "#f1c40f",
+                          color: GITHUB_COLORS.accent.yellow,
                           fontSize: "9px",
                           fontWeight: "bold",
                           marginBottom: "2px",
@@ -1332,7 +1492,7 @@ export async function GET(
                       <div
                         style={{
                           display: "flex",
-                          color: "#7d8590",
+                          color: GITHUB_COLORS.text.muted,
                           fontSize: "7px",
                           marginBottom: "3px",
                         }}
@@ -1347,10 +1507,20 @@ export async function GET(
                           justifyContent: "space-between",
                         }}
                       >
-                        <span style={{ color: "#7d8590", fontSize: "7px" }}>
+                        <span
+                          style={{
+                            color: GITHUB_COLORS.text.muted,
+                            fontSize: "7px",
+                          }}
+                        >
                           {repo.language ?? "N/A"}
                         </span>
-                        <span style={{ color: "#ffa657", fontSize: "7px" }}>
+                        <span
+                          style={{
+                            color: GITHUB_COLORS.accent.orange,
+                            fontSize: "7px",
+                          }}
+                        >
                           ⭐ {repo.stargazers_count ?? 0}
                         </span>
                       </div>
@@ -1363,7 +1533,7 @@ export async function GET(
                   <div
                     style={{
                       display: "flex",
-                      color: "#f0f6fc",
+                      color: GITHUB_COLORS.text.primary,
                       fontSize: "12px",
                       fontWeight: "bold",
                       marginTop: "15px",
@@ -1375,13 +1545,18 @@ export async function GET(
                   <div
                     style={{
                       display: "flex",
-                      background: "#161b22",
-                      padding: "6px 8px",
-                      borderRadius: "4px",
+                      background: GITHUB_COLORS.background.tertiary,
+                      padding: `${SPACING.md}px ${SPACING.lg}px`,
+                      borderRadius: RADIUS.sm,
                       justifyContent: "center",
                     }}
                   >
-                    <span style={{ color: "#7d8590", fontSize: "8px" }}>
+                    <span
+                      style={{
+                        color: GITHUB_COLORS.text.muted,
+                        fontSize: "8px",
+                      }}
+                    >
                       📡 Monitoring activity
                     </span>
                   </div>
