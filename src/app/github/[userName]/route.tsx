@@ -984,7 +984,7 @@ export async function GET(
                     display: "flex",
                     justifyContent: "space-between",
                     background: GITHUB_COLORS.background.tertiary,
-                    padding: `${SPACING.lg}px ${SPACING["2xl"]}`,
+                    padding: `${SPACING.lg} ${SPACING["2xl"]}`,
                     borderRadius: RADIUS.md,
                   }}
                 >
@@ -1070,7 +1070,7 @@ export async function GET(
                     display: "flex",
                     justifyContent: "space-between",
                     background: GITHUB_COLORS.background.tertiary,
-                    padding: `${SPACING.md}px ${SPACING.xl}px`,
+                    padding: `${SPACING.md} ${SPACING.xl}`,
                     borderRadius: RADIUS.sm,
                   }}
                 >
@@ -1097,7 +1097,7 @@ export async function GET(
                     display: "flex",
                     justifyContent: "space-between",
                     background: GITHUB_COLORS.background.tertiary,
-                    padding: `${SPACING.md}px ${SPACING.xl}px`,
+                    padding: `${SPACING.md} ${SPACING.xl}`,
                     borderRadius: RADIUS.sm,
                   }}
                 >
@@ -1124,7 +1124,7 @@ export async function GET(
                     display: "flex",
                     justifyContent: "space-between",
                     background: GITHUB_COLORS.background.tertiary,
-                    padding: `${SPACING.md}px ${SPACING.xl}px`,
+                    padding: `${SPACING.md} ${SPACING.xl}`,
                     borderRadius: RADIUS.sm,
                   }}
                 >
@@ -1176,7 +1176,7 @@ export async function GET(
                         display: "flex",
                         justifyContent: "space-between",
                         background: GITHUB_COLORS.background.tertiary,
-                        padding: `${SPACING.sm}px ${SPACING.lg}px`,
+                        padding: `${SPACING.sm} ${SPACING.lg}`,
                         borderRadius: RADIUS.xs,
                       }}
                     >
@@ -1229,7 +1229,7 @@ export async function GET(
                         display: "flex",
                         justifyContent: "space-between",
                         background: GITHUB_COLORS.background.tertiary,
-                        padding: `${SPACING.sm}px ${SPACING.lg}px`,
+                        padding: `${SPACING.sm} ${SPACING.lg}`,
                         borderRadius: RADIUS.xs,
                       }}
                     >
@@ -1282,7 +1282,7 @@ export async function GET(
                         display: "flex",
                         justifyContent: "space-between",
                         background: GITHUB_COLORS.background.tertiary,
-                        padding: `${SPACING.sm}px ${SPACING.lg}px`,
+                        padding: `${SPACING.sm} ${SPACING.lg}`,
                         borderRadius: RADIUS.xs,
                       }}
                     >
@@ -1418,7 +1418,7 @@ export async function GET(
                             display: "flex",
                             justifyContent: "space-between",
                             background: GITHUB_COLORS.background.tertiary,
-                            padding: `${SPACING.sm}px ${SPACING.lg}px`,
+                            padding: `${SPACING.sm} ${SPACING.lg}`,
                             borderRadius: RADIUS.xs,
                           }}
                         >
@@ -1546,7 +1546,7 @@ export async function GET(
                     style={{
                       display: "flex",
                       background: GITHUB_COLORS.background.tertiary,
-                      padding: `${SPACING.md}px ${SPACING.lg}px`,
+                      padding: `${SPACING.md} ${SPACING.lg}`,
                       borderRadius: RADIUS.sm,
                       justifyContent: "center",
                     }}
