@@ -654,3 +654,47 @@ export async function fetchUserComprehensiveProfile(userName: string) {
     return null;
   }
 }
+
+export async function fetchContributionCalendar(userName: string) {
+  try {
+    const octokit = createOctokit();
+    const query = `
+      query($userName: String!) {
+        user(login: $userName) {
+          contributionsCollection {
+            contributionCalendar {
+              weeks {
+                contributionDays {
+                  contributionCount
+                  date
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const response: {
+      user: {
+        contributionsCollection: {
+          contributionCalendar: {
+            weeks: {
+              contributionDays: {
+                contributionCount: number;
+                date: string;
+              }[];
+            }[];
+          };
+        };
+      };
+    } = (await octokit.graphql(query, {
+      userName,
+    }));
+
+    return response.user?.contributionsCollection?.contributionCalendar ?? null;
+  } catch (error) {
+    console.error("Error fetching contribution calendar:", error);
+    return null;
+  }
+}
