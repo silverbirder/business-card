@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 import { type NextRequest } from "next/server";
 import {
   fetchGitHubUser,
-  fetchUserStatsLight,
+  fetchUserStats,
   fetchUserFollowing,
   fetchContributionCalendar,
 } from "@/lib/github";
@@ -37,7 +37,7 @@ export async function GET(
   }
 
   const [userStats, following, contributionCalendar] = await Promise.all([
-    fetchUserStatsLight(userName),
+    fetchUserStats(userName),
     fetchUserFollowing(userName),
     fetchContributionCalendar(userName),
   ]);
@@ -64,7 +64,10 @@ export async function GET(
   try {
     const socialAccountsText =
       userData.socialAccounts
-        ?.map((account: { provider: string; url: string }) => `${account.provider}:${account.url}`)
+        ?.map(
+          (account: { provider: string; url: string }) =>
+            `${account.provider}:${account.url}`,
+        )
         .join("") ?? "";
     const allText = `${userData.name}${userData.username}${userData.company ?? ""}${userData.location ?? ""}${userData.email ?? ""}${userData.website ?? ""}${userData.followers}${userData.following}repositories${userData.publicRepos}stars${userData.totalStars}forks${userData.totalForks}gists${userData.totalGists}${socialAccountsText}GitHub since ${userData.createdAt ? new Date(userData.createdAt).getFullYear() : "unknown"}followers following`;
 
