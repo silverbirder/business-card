@@ -599,6 +599,49 @@ export async function fetchUserStats(userName: string) {
   }
 }
 
+export async function fetchUserStatsLight(userName: string) {
+  try {
+    const [repos, gists, socialAccounts] = await Promise.all([
+      fetchUserRepos(userName),
+      fetchUserGists(userName),
+      fetchUserSocialAccounts(userName),
+    ]);
+
+    const languageStats: Record<string, number> = {};
+    let totalStars = 0;
+    let totalForks = 0;
+
+    for (const repo of repos) {
+      if (repo.language) {
+        languageStats[repo.language] = (languageStats[repo.language] ?? 0) + 1;
+      }
+      totalStars += repo.stargazers_count ?? 0;
+      totalForks += repo.forks_count ?? 0;
+    }
+
+    const topLanguages = Object.entries(languageStats)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 3);
+
+    return {
+      totalStars,
+      totalForks,
+      topLanguages,
+      totalGists: gists.length,
+      socialAccounts,
+    };
+  } catch (error) {
+    console.error("Error fetching user stats:", error);
+    return {
+      totalStars: 0,
+      totalForks: 0,
+      topLanguages: [],
+      totalGists: 0,
+      socialAccounts: [],
+    };
+  }
+}
+
 export async function fetchUserComprehensiveProfile(userName: string) {
   try {
     const [
@@ -688,9 +731,9 @@ export async function fetchContributionCalendar(userName: string) {
           };
         };
       };
-    } = (await octokit.graphql(query, {
+    } = await octokit.graphql(query, {
       userName,
-    }));
+    });
 
     return response.user?.contributionsCollection?.contributionCalendar ?? null;
   } catch (error) {

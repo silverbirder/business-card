@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 import { type NextRequest } from "next/server";
 import {
   fetchGitHubUser,
-  fetchUserStats,
+  fetchUserStatsLight,
   fetchUserFollowing,
   fetchContributionCalendar,
 } from "@/lib/github";
@@ -37,7 +37,7 @@ export async function GET(
   }
 
   const [userStats, following, contributionCalendar] = await Promise.all([
-    fetchUserStats(userName),
+    fetchUserStatsLight(userName),
     fetchUserFollowing(userName),
     fetchContributionCalendar(userName),
   ]);
@@ -45,7 +45,6 @@ export async function GET(
   const userData = {
     name: gitHubUser.name ?? gitHubUser.login,
     username: gitHubUser.login,
-    // bio: gitHubUser.bio ?? "GitHub Developer",
     company: gitHubUser.company ?? "",
     location: gitHubUser.location ?? "",
     email: gitHubUser.email ?? "",
@@ -57,53 +56,15 @@ export async function GET(
     totalStars: userStats.totalStars,
     totalForks: userStats.totalForks,
     topLanguages: userStats.topLanguages,
-    // repos: userStats.repos,
-    // gists: userStats.gists,
-    // organizations: userStats.organizations,
-    // recentCommits: userStats.recentCommits,
-    // recentPRs: userStats.recentPRs,
-    // recentIssues: userStats.recentIssues,
     totalGists: userStats.totalGists,
-    // totalOrganizations: userStats.totalOrganizations,
-    // starred: userStats.starred,
-    // starredCount: userStats.starredCount,
-    // starredLanguageStats: userStats.starredLanguageStats,
-    // subscriptions: userStats.subscriptions,
-    // subscriptionsCount: userStats.subscriptionsCount,
-    // receivedEvents: userStats.receivedEvents,
-    // publicKeys: userStats.publicKeys,
-    // publicKeysCount: userStats.publicKeysCount,
-    // gpgKeys: userStats.gpgKeys,
-    // gpgKeysCount: userStats.gpgKeysCount,
     socialAccounts: userStats.socialAccounts,
-    // yearlyCommits: userStats.yearlyCommits,
-    // eventTypeStats: userStats.eventTypeStats,
-    // followersData: userStats.followers,
-    // followersCount: userStats.followersCount,
-    // receivedPublicEvents: userStats.receivedPublicEvents,
-    // receivedPublicEventsCount: userStats.receivedPublicEventsCount,
-    // sshSigningKeys: userStats.sshSigningKeys,
-    // sshSigningKeysCount: userStats.sshSigningKeysCount,
-    // packages: userStats.packages,
-    // packagesCount: userStats.packagesCount,
-    // followingCount: userStats.followingCount,
-    // followerToFollowingRatio: userStats.followerToFollowingRatio,
-    // dayOfWeekStats: userStats.dayOfWeekStats,
-    // monthlyActivity: userStats.monthlyActivity,
-    // packageEcosystems: userStats.packageEcosystems,
     createdAt: gitHubUser.created_at,
-    // updatedAt: gitHubUser.updated_at,
-    // type: gitHubUser.type,
-    // siteAdmin: gitHubUser.site_admin,
-    // publicGists: gitHubUser.public_gists,
-    // hireable: gitHubUser.hireable,
-    // twitterUsername: gitHubUser.twitter_username,
   };
 
   try {
     const socialAccountsText =
       userData.socialAccounts
-        ?.map((account) => `${account.provider}:${account.url}`)
+        ?.map((account: { provider: string; url: string }) => `${account.provider}:${account.url}`)
         .join("") ?? "";
     const allText = `${userData.name}${userData.username}${userData.company ?? ""}${userData.location ?? ""}${userData.email ?? ""}${userData.website ?? ""}${userData.followers}${userData.following}repositories${userData.publicRepos}stars${userData.totalStars}forks${userData.totalForks}gists${userData.totalGists}${socialAccountsText}GitHub since ${userData.createdAt ? new Date(userData.createdAt).getFullYear() : "unknown"}followers following`;
 
@@ -262,7 +223,7 @@ export async function GET(
                     💻{" "}
                     {userData.topLanguages
                       .slice(0, 3)
-                      .map(([language]) => language)
+                      .map(([language]: [string, number]) => language)
                       .join(", ")}
                   </Flex>
                 </Flex>
