@@ -91,6 +91,8 @@ export default async function Page() {
             <p className="text-gray-300 mb-4">デモを見たい方はこちら</p>
             <Link
               href="/github/octocat"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium rounded-xl hover:bg-white/20 transition-all duration-200 transform hover:scale-105"
             >
               <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
